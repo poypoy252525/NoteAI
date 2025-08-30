@@ -12,6 +12,10 @@ class NoteService {
   async createNote({ userId, title, content }: CreateNoteParams) {
     return this.noteRepository.createNote({ userId, title, content });
   }
+
+  async getNotesByUserId(userId: string) {
+    return this.noteRepository.getNotesByUserId(userId);
+  }
 }
 
 export default NoteService;

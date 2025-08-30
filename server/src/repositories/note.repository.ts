@@ -20,6 +20,16 @@ class NoteRepository {
 
     return note;
   }
+
+  async getNotesByUserId(userId: string) {
+    const notes = await this.prisma.note.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return notes;
+  }
 }
 
 export default NoteRepository;

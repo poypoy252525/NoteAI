@@ -13,7 +13,7 @@ export const createUserController = async (req: Request, res: Response) => {
     const validation = createUserSchema.safeParse(req.body);
 
     if (!validation.success) {
-      return res.status(400).json({ error: validation.error });
+      return res.status(400).json({ error: z.prettifyError(validation.error) });
     }
 
     const { email } = validation.data;
