@@ -17,6 +17,7 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
+  notes     Note[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,6 +26,8 @@ model Note {
   id        String   @id @default(uuid())
   title     String
   content   String
+  userId    String
+  user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
