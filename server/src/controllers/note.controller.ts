@@ -5,7 +5,7 @@ import { z } from "zod";
 const noteService = new NoteService();
 
 const createNoteSchema = z.object({
-  userId: z.string(),
+  userId: z.string().uuid(),
   title: z.string(),
   content: z.string(),
 });
