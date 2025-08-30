@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
-import UserService from "@/services/user.service";
+import UserService from "../services/user.service";
 
 const createUserSchema = z.object({
   email: z.string().email(),
