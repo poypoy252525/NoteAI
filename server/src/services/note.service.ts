@@ -7,11 +7,7 @@ type CreateNoteParams = {
 };
 
 class NoteService {
-  private noteRepository: NoteRepository;
-
-  constructor(noteRepository: NoteRepository) {
-    this.noteRepository = noteRepository;
-  }
+  private noteRepository: NoteRepository = new NoteRepository();
 
   async createNote({ userId, title, content }: CreateNoteParams) {
     return this.noteRepository.createNote({ userId, title, content });
