@@ -3,7 +3,7 @@ import { z } from "zod";
 import UserService from "../services/user.service";
 
 const createUserSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 
 const userService = new UserService();
