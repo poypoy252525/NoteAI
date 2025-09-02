@@ -1,8 +1,8 @@
 {
-  "name": "server",
+  "name": "noteai-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^3.1.10",
     "prisma": "^6.15.0",
     "typescript": "^5.9.2"
