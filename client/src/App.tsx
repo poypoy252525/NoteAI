@@ -1,16 +1,29 @@
-import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
+import { Input } from "./components/ui/input";
+import NoteCard from "./components/note-card";
+import { Link } from "react-router-dom";
 
 function App() {
-  const [test, setTest] = useState<string>("");
-
-  useEffect(() => {
-    fetch("/api/test")
-      .then((res) => res.json())
-      .then((data) => setTest(data.message));
-  }, []);
-
-  return <Button>{test}</Button>;
+  return (
+    <div>
+      <header className="p-4">
+        <span className="text-4xl font-semibold">Notes</span>
+      </header>
+      <div className="px-4 pb-4">
+        <div className="flex items-center gap-2">
+          <Input placeholder="Search..." />
+          <Button>New Note</Button>
+        </div>
+        <div className="py-4 grid grid-cols-1 gap-4">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <Link to={`/note/${index}`} key={index}>
+              <NoteCard />
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
