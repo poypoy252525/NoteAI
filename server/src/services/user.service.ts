@@ -6,8 +6,16 @@ class UserService {
     this.userRepository = new UserRepository();
   }
 
-  async createUser(email: string) {
-    return this.userRepository.createUser(email);
+  async createUser(email: string, password: string) {
+    const newUser = await this.userRepository.createUser(email, password);
+
+    return newUser;
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.userRepository.getUserByEmail(email);
+
+    return user;
   }
 }
 

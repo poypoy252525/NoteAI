@@ -1,8 +1,6 @@
 dist
 node_modules
 .env
-/generated/prisma
-
-/src/generated/prisma
+package-lock.json
 
 .vercel
