@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import LLMService from "../services/llm.service";
+import GenAIRepository from "../repositories/llm/genai.repository";
 import OllamaRepository from "../repositories/llm/ollama.repository";
 
 const generateResponseSchema = z.object({
   message: z.string(),
 });
 
-const llmService = new LLMService(new OllamaRepository());
+// const llmService = new LLMService(new OllamaRepository());
+const llmService = new LLMService(new GenAIRepository());
 
 export const generateResponseController = async (
   req: Request,

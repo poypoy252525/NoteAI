@@ -6,7 +6,7 @@ class LLMService {
     this.llmRepository = llmRepository;
   }
 
-  async generateResponse(message: string): Promise<string> {
+  async generateResponse(message: string): Promise<string | undefined> {
     return this.llmRepository.generateResponse(message);
   }
 }
