@@ -29,4 +29,6 @@ class UserRepository {
   }
 }
 
+export const userRepository = new UserRepository();
+
 export default UserRepository;

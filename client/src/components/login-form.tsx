@@ -32,7 +32,7 @@ export function LoginForm({
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      await axios.post("/api/auth/register", form, { withCredentials: true });
+      await axios.post("/api/auth/login", form, { withCredentials: true });
       redirect("/");
     } catch (error) {
       console.error(error);
