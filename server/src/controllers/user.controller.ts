@@ -54,7 +54,7 @@ export const createUserController = async (req: Request, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(201).json({ message: "User created", user, token });
+    return res.status(201).json({ token });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }

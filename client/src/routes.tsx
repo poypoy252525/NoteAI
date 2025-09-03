@@ -3,11 +3,18 @@ import App from "./App";
 import NoteDetails from "./pages/note-details";
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
+import RootLayout from "./root-layout";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <App />,
+      },
+    ],
   },
   {
     path: "/note/:id",
