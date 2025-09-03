@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import z from "zod";
 import {
   Form,
@@ -22,7 +22,7 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
-export function LoginForm({
+export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -30,13 +30,10 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
-  const navigate = useNavigate();
-
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      await axios.post("/api/auth/login", form, { withCredentials: true });
-      console.log("first");
-      navigate("/");
+      await axios.post("/api/auth/register", form, { withCredentials: true });
+      redirect("/");
     } catch (error) {
       console.error(error);
     }
@@ -59,9 +56,9 @@ export function LoginForm({
               </a>
               <h1 className="text-xl font-bold">Welcome to NoteAI</h1>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
+                Already have an account?{" "}
                 <Button variant="link" className="p-0">
-                  <Link to="/register">Sign up</Link>
+                  <Link to="/login">Login</Link>
                 </Button>
               </div>
             </div>
@@ -97,7 +94,7 @@ export function LoginForm({
                 )}
               />
               <Button type="submit" className="w-full">
-                Login
+                Sign up
               </Button>
             </div>
           </div>

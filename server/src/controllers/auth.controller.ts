@@ -32,6 +32,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
 export const loginController = async (req: Request, res: Response) => {
   try {
+    console.log("first");
     const validation = createUserSchema.safeParse(req.body);
     if (!validation.success)
       return res.status(400).json({ error: z.prettifyError(validation.error) });
