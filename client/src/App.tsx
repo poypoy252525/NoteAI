@@ -1,7 +1,7 @@
+import { Link } from "react-router-dom";
+import NoteCard from "./components/note-card";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
-import NoteCard from "./components/note-card";
-import { Link } from "react-router-dom";
 
 function App() {
   return (

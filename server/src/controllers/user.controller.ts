@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 
-const createUserSchema = z.object({
+export const createUserSchema = z.object({
   email: z.email(),
   password: z.string(),
 });
@@ -35,11 +35,26 @@ export const createUserController = async (req: Request, res: Response) => {
       { userId: user?.id, email: user?.email },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "1h",
+        expiresIn: "15m",
       }
     );
 
-    return res.status(201).json({ message: "User created", data: user, token });
+    const refreshToken = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_REFRESH_SECRET!,
+      {
+        expiresIn: "30d",
+      }
+    );
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(201).json({ message: "User created", user, token });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
