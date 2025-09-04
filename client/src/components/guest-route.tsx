@@ -1,5 +1,5 @@
 import { api } from "@/services/axios-instance";
-import { useAuth } from "@/stores/token";
+import { useAuth } from "@/stores/auth";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
