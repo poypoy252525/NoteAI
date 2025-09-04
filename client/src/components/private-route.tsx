@@ -1,10 +1,10 @@
 import { api } from "@/services/axios-instance";
-import { useToken } from "@/stores/token";
+import { useAuth } from "@/stores/token";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
-  const { accessToken, setAccessToken } = useToken();
+  const { accessToken, setAuth } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const PrivateRoute = () => {
         .then((response) => {
           const newAccessToken = response.data.accessToken;
           console.log(newAccessToken);
-          setAccessToken(newAccessToken);
+          setAuth(newAccessToken, response.data.user);
         })
         .catch((error) => {
           console.error(error);
@@ -24,7 +24,7 @@ const PrivateRoute = () => {
           setLoading(false);
         });
     }
-  }, [accessToken, setAccessToken]);
+  }, [accessToken, setAuth]);
 
   if (loading) {
     return <div>Loading...</div>;

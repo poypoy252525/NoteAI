@@ -2,10 +2,17 @@ import { create } from "zustand";
 
 interface Store {
   accessToken: string | undefined;
-  setAccessToken: (token: string) => void;
+  user: { email: string; userId: string } | undefined;
+  setAuth: (
+    accessToken: string,
+    user: { email: string; userId: string }
+  ) => void;
+  clearAuth: () => void;
 }
 
-export const useToken = create<Store>((set) => ({
+export const useAuth = create<Store>((set) => ({
   accessToken: undefined,
-  setAccessToken: (token) => set({ accessToken: token }),
+  user: undefined,
+  setAuth: (accessToken, user) => set({ accessToken, user }),
+  clearAuth: () => set({ accessToken: undefined, user: undefined }),
 }));

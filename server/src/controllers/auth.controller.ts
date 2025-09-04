@@ -21,13 +21,12 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
   if (!decoded) return res.status(403).json({ error: "Invalid refresh token" });
 
-  const newAccessToken = jwt.sign(
-    { userId: decoded.userId, email: decoded.email },
-    process.env.JWT_SECRET!,
-    { expiresIn: "15m" }
-  );
+  const payload = { userId: decoded.userId, email: decoded.email };
+  const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
+    expiresIn: "15m",
+  });
 
-  res.json({ accessToken: newAccessToken });
+  res.json({ accessToken: newAccessToken, user: payload });
 };
 
 export const loginController = async (req: Request, res: Response) => {

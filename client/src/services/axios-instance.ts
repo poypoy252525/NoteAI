@@ -1,4 +1,4 @@
-import { useToken } from "@/stores/token";
+import { useAuth } from "@/stores/token";
 import axios, { AxiosError } from "axios";
 
 export const api = axios.create({
@@ -6,7 +6,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const accessToken = useToken.getState().accessToken;
+  const accessToken = useAuth.getState().accessToken;
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -26,16 +26,15 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const { data } = await axios.post<{ accessToken: string }>(
-          "/auth/refresh",
-          {},
-          { withCredentials: true }
-        );
+        const { data } = await axios.post<{
+          accessToken: string;
+          user: { email: string; userId: string };
+        }>("/auth/refresh", {}, { withCredentials: true });
 
         const newAccessToken = data.accessToken;
 
-        const setAccessToken = useToken.getState().setAccessToken;
-        setAccessToken(newAccessToken);
+        const setAuth = useAuth.getState().setAuth;
+        setAuth(newAccessToken, data.user);
 
         if (originalRequest)
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

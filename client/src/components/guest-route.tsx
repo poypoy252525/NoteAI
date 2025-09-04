@@ -1,10 +1,10 @@
 import { api } from "@/services/axios-instance";
-import { useToken } from "@/stores/token";
+import { useAuth } from "@/stores/token";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const GuestRoute = () => {
-  const { accessToken } = useToken();
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
   console.log(accessToken);
 

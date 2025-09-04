@@ -3,6 +3,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/stores/token";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,8 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import axios from "axios";
-import { useToken } from "@/stores/token";
+import { api } from "@/services/axios-instance";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -32,15 +32,15 @@ export function LoginForm({
   });
 
   const navigate = useNavigate();
-  const setAccessToken = useToken((state) => state.setAccessToken);
+  const setAuth = useAuth((state) => state.setAuth);
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      const { data } = await axios.post<{
-        token: string;
+      const { data } = await api.post<{
+        accessToken: string;
         user: { email: string; userId: string };
-      }>("/api/auth/login", form, { withCredentials: true });
-      setAccessToken(data.token);
+      }>("/auth/login", form, { withCredentials: true });
+      setAuth(data.accessToken, data.user);
       navigate("/");
     } catch (error) {
       console.error(error);
