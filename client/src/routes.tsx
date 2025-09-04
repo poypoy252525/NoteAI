@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import PrivateRoute from "./components/private-route";
+import GuestRoute from "./components/guest-route";
 import LoginPage from "./pages/login-page";
 import NoteDetails from "./pages/note-details";
 import SignupPage from "./pages/signup-page";
@@ -19,13 +20,17 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <SignupPage />,
+    element: <GuestRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <SignupPage />,
+      },
+    ],
   },
 ]);
