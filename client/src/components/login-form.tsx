@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import axios from "axios";
+import { useToken } from "@/stores/token";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -31,11 +32,15 @@ export function LoginForm({
   });
 
   const navigate = useNavigate();
+  const setAccessToken = useToken((state) => state.setAccessToken);
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      await axios.post("/api/auth/login", form, { withCredentials: true });
-      console.log("first");
+      const { data } = await axios.post<{
+        token: string;
+        user: { email: string; userId: string };
+      }>("/api/auth/login", form, { withCredentials: true });
+      setAccessToken(data.token);
       navigate("/");
     } catch (error) {
       console.error(error);

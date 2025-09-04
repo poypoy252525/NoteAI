@@ -1,25 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import NoteDetails from "./pages/note-details";
+import PrivateRoute from "./components/private-route";
 import LoginPage from "./pages/login-page";
+import NoteDetails from "./pages/note-details";
 import SignupPage from "./pages/signup-page";
-import RootLayout from "./root-layout";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RootLayout />,
+    element: <PrivateRoute />,
     children: [
       {
-        index: true,
+        path: "/",
         element: <App />,
+      },
+      {
+        path: "/note/:id",
+        element: <NoteDetails />,
       },
     ],
   },
-  {
-    path: "/note/:id",
-    element: <NoteDetails />,
-  },
+
   {
     path: "/login",
     element: <LoginPage />,

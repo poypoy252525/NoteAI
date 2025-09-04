@@ -11,7 +11,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
-    return res.sendStatus(401);
+    return res.status(401).json({ error: "No refresh token" });
   }
 
   const decoded = jwt.verify(
@@ -32,7 +32,6 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
 export const loginController = async (req: Request, res: Response) => {
   try {
-    console.log("first");
     const validation = createUserSchema.safeParse(req.body);
     if (!validation.success)
       return res.status(400).json({ error: z.prettifyError(validation.error) });
@@ -61,12 +60,12 @@ export const loginController = async (req: Request, res: Response) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    return res.json({ token: accessToken, user });
+    return res.json({ token: accessToken, user: payload });
   } catch (error) {
     return res
       .status(500)
