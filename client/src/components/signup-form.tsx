@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/services/axios-instance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
 import {
   Form,
@@ -26,6 +26,7 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
@@ -33,7 +34,7 @@ export function SignupForm({
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
       await api.post("/auth/register", form, { withCredentials: true });
-      redirect("/");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
