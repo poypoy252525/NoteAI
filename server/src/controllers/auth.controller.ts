@@ -71,3 +71,17 @@ export const loginController = async (req: Request, res: Response) => {
       .json({ error: "Internal server error, triggered at login" });
   }
 };
+
+export const logoutController = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("refreshToken");
+    return res.json({ message: "Logout successful" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        error: "Internal server error, triggered at logout",
+        details: error,
+      });
+  }
+};
