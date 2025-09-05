@@ -11,5 +11,7 @@
       "src": "/(.*)",
       "dest": "/dist/index.js"
     }
-  ]
+  ],
+  "buildCommand": "npx prisma migrate dev && npm run build",
+  "installCommand": "npm install"
 }
