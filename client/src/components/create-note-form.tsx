@@ -30,7 +30,7 @@ const CreateNoteForm = () => {
     defaultValues: {
       title: "",
       content: "",
-      category: "",
+      category: "General",
     },
   });
   const user = useAuth((state) => state.user);

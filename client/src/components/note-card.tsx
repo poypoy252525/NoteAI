@@ -10,12 +10,19 @@ import {
 import { Button } from "./ui/button";
 import { EllipsisVerticalIcon } from "lucide-react";
 
-const NoteCard = () => {
+interface Props {
+  title: string;
+  category: string | undefined;
+  content: string;
+  createdAt: Date;
+}
+
+const NoteCard = ({ title, category, content, createdAt }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>My Exam</CardTitle>
-        <CardDescription>Study</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{category ? category : "General"}</CardDescription>
         <CardAction>
           <Button size="icon" variant="ghost">
             <EllipsisVerticalIcon />
@@ -23,13 +30,12 @@ const NoteCard = () => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-2">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt,
-          at!
-        </p>
+        <p className="line-clamp-2">{content}</p>
       </CardContent>
       <CardFooter>
-        <p className="text-muted-foreground">Just now</p>
+        <p className="text-muted-foreground text-xs">
+          {new Date(createdAt).toLocaleString()}
+        </p>
       </CardFooter>
     </Card>
   );

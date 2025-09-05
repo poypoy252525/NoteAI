@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 
 export const api = axios.create({
   baseURL: "/api",
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
