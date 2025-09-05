@@ -5,7 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
   const { accessToken, setAuth } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!accessToken);
 
   useEffect(() => {
     if (!accessToken) {
@@ -23,6 +23,8 @@ const PrivateRoute = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [accessToken, setAuth]);
 

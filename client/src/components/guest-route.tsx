@@ -6,7 +6,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 const GuestRoute = () => {
   const { accessToken } = useAuth();
   const navigate = useNavigate();
-  console.log(accessToken);
 
   useEffect(() => {
     api
@@ -18,7 +17,7 @@ const GuestRoute = () => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   }, [accessToken, navigate]);
 

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/stores/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
@@ -16,7 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { api } from "@/services/axios-instance";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -36,10 +36,13 @@ export function LoginForm({
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      const { data } = await api.post<{
+      const { data } = await axios.post<{
         accessToken: string;
         user: { email: string; userId: string };
-      }>("/auth/login", form, { withCredentials: true });
+      }>(`${import.meta.env.VITE_API_URL}/api/auth/login`, form, {
+        withCredentials: true,
+      });
+      console.log(data.accessToken);
       setAuth(data.accessToken, data.user);
       navigate("/");
     } catch (error) {

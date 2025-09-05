@@ -3,7 +3,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { api } from "@/services/axios-instance";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,7 +33,10 @@ export function SignupForm({
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      await api.post("/auth/register", form, { withCredentials: true });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        form
+      );
       navigate("/");
     } catch (error) {
       console.error(error);

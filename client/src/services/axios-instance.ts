@@ -30,7 +30,11 @@ api.interceptors.response.use(
         const { data } = await axios.post<{
           accessToken: string;
           user: { email: string; userId: string };
-        }>("/auth/refresh", {}, { withCredentials: true });
+        }>(
+          `${import.meta.env.VITE_API_URL!}/api/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
 
         const newAccessToken = data.accessToken;
 
@@ -40,7 +44,10 @@ api.interceptors.response.use(
         if (originalRequest)
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       } catch (error) {
-        console.error(error);
+        if (error instanceof AxiosError) {
+          if (error.status !== 401 && error.status !== 403)
+            console.error(error.response?.data);
+        }
       }
     }
 

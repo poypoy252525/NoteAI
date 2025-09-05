@@ -5,6 +5,7 @@ import { Input } from "./components/ui/input";
 import { useEffect, useState } from "react";
 import { api } from "./services/axios-instance";
 import { useAuth } from "./stores/auth";
+import { LogOut } from "lucide-react";
 
 interface Note {
   title: string;
@@ -19,6 +20,7 @@ interface Note {
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const user = useAuth((state) => state.user);
+  const clearAuth = useAuth((state) => state.clearAuth);
 
   useEffect(() => {
     api.get(`/users/${user?.userId}/notes`).then((response) => {
@@ -28,8 +30,18 @@ function App() {
 
   return (
     <div>
-      <header className="p-4">
+      <header className="flex justify-between p-4">
         <span className="text-4xl font-semibold">Notes</span>
+        <Button
+          onClick={async () => {
+            await api.post("/auth/logout", {}, { withCredentials: true });
+            clearAuth();
+          }}
+          size="icon"
+          variant="ghost"
+        >
+          <LogOut />
+        </Button>
       </header>
       <div className="px-4 pb-4">
         <div className="flex items-center gap-2">

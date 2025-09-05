@@ -8,7 +8,7 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   if (!req.headers.authorization) {
-    return res.sendStatus(401);
+    return res.status(401).json({ error: "No access token provided" });
   }
 
   const token = req.headers.authorization.split(" ")[1];

@@ -60,11 +60,12 @@ export const loginController = async (req: Request, res: Response) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: "/",
     });
 
-    return res.json({ token: accessToken, user: payload });
+    return res.json({ accessToken, user: payload });
   } catch (error) {
     return res
       .status(500)
@@ -77,11 +78,9 @@ export const logoutController = async (req: Request, res: Response) => {
     res.clearCookie("refreshToken");
     return res.json({ message: "Logout successful" });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        error: "Internal server error, triggered at logout",
-        details: error,
-      });
+    return res.status(500).json({
+      error: "Internal server error, triggered at logout",
+      details: error,
+    });
   }
 };
