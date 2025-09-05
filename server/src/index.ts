@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import router from "../src/routes";
+import router from "./routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
