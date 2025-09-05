@@ -3,6 +3,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { api } from "@/services/axios-instance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, redirect } from "react-router-dom";
@@ -15,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import axios from "axios";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -32,7 +32,7 @@ export function SignupForm({
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
-      await axios.post("/api/auth/register", form, { withCredentials: true });
+      await api.post("/auth/register", form, { withCredentials: true });
       redirect("/");
     } catch (error) {
       console.error(error);
