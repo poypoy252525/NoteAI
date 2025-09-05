@@ -2,7 +2,7 @@ import { useAuth } from "@/stores/auth";
 import axios, { AxiosError } from "axios";
 
 export const api = axios.create({
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL + "/api",
   withCredentials: true,
 });
 
