@@ -20,8 +20,7 @@ router.get(
   authMiddleware,
   getNotesByUserIdController
 );
-
-router.post("/api/notes", createNoteController);
+router.post("/api/users/:userId/notes", authMiddleware, createNoteController);
 
 router.post("/api/chat", generateResponseController);
 

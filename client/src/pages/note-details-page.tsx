@@ -1,4 +1,4 @@
-const NoteDetails = () => {
+const NoteDetailsPage = () => {
   return (
     <div>
       <header></header>
@@ -8,4 +8,4 @@ const NoteDetails = () => {
   );
 };
 
-export default NoteDetails;
+export default NoteDetailsPage;

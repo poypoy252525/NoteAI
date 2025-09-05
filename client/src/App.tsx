@@ -12,7 +12,9 @@ function App() {
       <div className="px-4 pb-4">
         <div className="flex items-center gap-2">
           <Input placeholder="Search..." />
-          <Button>New Note</Button>
+          <Button asChild>
+            <Link to="/note/new">New Note</Link>
+          </Button>
         </div>
         <div className="py-4 grid grid-cols-1 gap-4">
           {Array.from({ length: 10 }).map((_, index) => (

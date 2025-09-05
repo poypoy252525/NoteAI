@@ -5,7 +5,6 @@ import { z } from "zod";
 const noteService = new NoteService();
 
 const createNoteSchema = z.object({
-  userId: z.uuid(),
   title: z.string(),
   content: z.string(),
 });
@@ -13,11 +12,16 @@ const createNoteSchema = z.object({
 export const createNoteController = async (req: Request, res: Response) => {
   try {
     const validation = createNoteSchema.safeParse(req.body);
+    const { userId } = req.params;
     if (!validation.success) {
       return res.status(400).json({ error: z.prettifyError(validation.error) });
     }
-    const { userId, title, content } = validation.data;
-    const note = await noteService.createNote({ userId, title, content });
+    const { title, content } = validation.data;
+    const note = await noteService.createNote({
+      userId: userId!,
+      title,
+      content,
+    });
     res.json(note);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });

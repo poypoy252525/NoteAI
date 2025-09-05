@@ -3,8 +3,9 @@ import App from "./App";
 import PrivateRoute from "./components/private-route";
 import GuestRoute from "./components/guest-route";
 import LoginPage from "./pages/login-page";
-import NoteDetails from "./pages/note-details";
+import NoteDetailsPage from "./pages/note-details-page";
 import SignupPage from "./pages/signup-page";
+import CreateNotePage from "./pages/create-note-page";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/note/:id",
-        element: <NoteDetails />,
+        element: <NoteDetailsPage />,
+      },
+      {
+        path: "/note/new",
+        element: <CreateNotePage />,
       },
     ],
   },
