@@ -37,6 +37,6 @@ export const getNotesByUserIdController = async (
     const notes = await noteService.getNotesByUserId(userId!);
     res.json(notes);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: error });
   }
 };
