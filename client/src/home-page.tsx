@@ -37,12 +37,12 @@ function HomePage() {
         <div className="flex items-center gap-2">
           <Input placeholder="Search..." />
           <Button asChild>
-            <Link to="/note/new">New Note</Link>
+            <Link to="/notes/new">New Note</Link>
           </Button>
         </div>
         <div className="py-4 grid grid-cols-1 gap-4">
           {notes.map((note, index) => (
-            <Link to={`/note/${note.id}`} key={index}>
+            <Link to={`/notes/${note.id}`} key={index}>
               <NoteCard
                 title={note.title}
                 category={note.category || undefined}

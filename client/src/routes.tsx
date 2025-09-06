@@ -16,11 +16,11 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/note/:id",
+        path: "/notes/:id",
         element: <NoteDetailsPage />,
       },
       {
-        path: "/note/new",
+        path: "/notes/new",
         element: <CreateNotePage />,
       },
     ],
