@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
+import HomePage from "./home-page";
 import PrivateRoute from "./components/private-route";
 import GuestRoute from "./components/guest-route";
 import LoginPage from "./pages/login-page";
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <App />,
+        element: <HomePage />,
       },
       {
         path: "/note/:id",

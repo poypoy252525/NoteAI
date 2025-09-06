@@ -12,6 +12,16 @@ class OllamaRepository implements LLMRepository {
   constructor(model: string = "gemma3:270m") {
     this.model = model;
   }
+
+  async generateEmbeddingResponse(input: string) {
+    const response = await this.ollama.embed({
+      model: "embeddinggemma:latest",
+      input: input,
+    });
+
+    return response.embeddings;
+  }
+
   async generateResponse(message: string): Promise<string> {
     const response = await this.ollama.chat({
       model: this.model,

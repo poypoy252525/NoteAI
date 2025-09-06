@@ -17,7 +17,7 @@ interface Note {
   category: string | null;
 }
 
-function App() {
+function HomePage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const user = useAuth((state) => state.user);
   const clearAuth = useAuth((state) => state.clearAuth);
@@ -67,4 +67,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;

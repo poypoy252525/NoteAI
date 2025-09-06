@@ -14,6 +14,10 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const createNoteSchema = z.object({
   title: z.string().trim().min(3, "Title must be at least 3 characters long"),
@@ -34,13 +38,25 @@ const CreateNoteForm = () => {
     },
   });
   const user = useAuth((state) => state.user);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof createNoteSchema>) => {
     try {
-      const response = await api.post(`/users/${user?.userId}/notes`, data);
-      console.log(response.data);
+      setLoading(true);
+      await api.post(`/users/${user?.userId}/notes`, data);
+      form.reset();
+      navigate("/");
+      toast.success("Note created", {
+        description: "Your note has been created successfully",
+      });
     } catch (error) {
       console.error(error);
+      toast.error("Error", {
+        description: "An error occurred while creating your note",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,7 +96,10 @@ const CreateNoteForm = () => {
           />
         </div>
         <div className="flex justify-end py-4">
-          <Button type="submit">Create Note</Button>
+          <Button type="submit" disabled={loading}>
+            {loading && <Loader2 className="animate-spin" />}
+            Create note
+          </Button>
         </div>
       </form>
     </Form>
