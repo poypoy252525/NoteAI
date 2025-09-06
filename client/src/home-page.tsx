@@ -30,7 +30,7 @@ function HomePage() {
   return (
     <div>
       <header className="flex justify-between p-4">
-        <span className="text-4xl font-semibold">Notes</span>
+        <span className="text-2xl font-semibold">Notes</span>
         <LogoutDialog />
       </header>
       <div className="px-4 pb-4">
