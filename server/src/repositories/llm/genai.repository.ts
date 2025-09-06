@@ -10,16 +10,53 @@ const prompt = readFileSync(path.join(__dirname, "prompt.txt"), "utf-8");
 
 class GenAIRepository implements LLMRepository {
   private genAI;
+  private readonly modelName: string = "gemma-3-27b-it";
 
   constructor() {
     this.genAI = new GoogleGenAI({
-      apiKey: API_KEY,
+      apiKey: API_KEY!,
     });
+  }
+  async categorizeNote(note: string): Promise<string | undefined> {
+    const response = await this.genAI.models.generateContent({
+      model: this.modelName,
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: "categorize this note without saying any explanation, the output must be the categorized version and nothing more. the category must not too long, perhaps 3 words at most you can exceed if really in need. \n\n",
+            },
+            { text: note },
+          ],
+        },
+      ],
+    });
+
+    return response.text;
+  }
+  async summarizeNote(note: string): Promise<string | undefined> {
+    const response = await this.genAI.models.generateContent({
+      model: this.modelName,
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: "summarize this note without saying any explanation, the output must be the summarized version and nothing more. respond with less than or equal 300 tokens. \n\n",
+            },
+            { text: note },
+          ],
+        },
+      ],
+    });
+
+    return response.text;
   }
 
   async generateResponse(message: string): Promise<string | undefined> {
     const response = await this.genAI.models.generateContent({
-      model: "gemma-3-27b-it",
+      model: this.modelName,
       contents: [
         {
           role: "user",

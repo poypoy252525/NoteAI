@@ -28,6 +28,7 @@ model Note {
   title     String   @db.VarChar(255)
   content   String   @db.Text
   category  String?  @db.VarChar(255)
+  summary   String?  @db.Text
   userId    String   
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

@@ -1,8 +1,9 @@
 import type { Request, Response } from "express";
 import NoteService from "../services/note.service";
 import { z } from "zod";
+import GenAIRepository from "../repositories/llm/genai.repository";
 
-const noteService = new NoteService();
+const noteService = new NoteService(new GenAIRepository());
 
 const createNoteSchema = z.object({
   title: z.string(),

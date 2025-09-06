@@ -4,17 +4,27 @@ type CreateNoteParams = {
   userId: string;
   title: string;
   content: string;
+  summary: string;
+  category?: string;
 };
 
 class NoteRepository {
   private prisma = new PrismaClient();
 
-  async createNote({ userId, title, content }: CreateNoteParams) {
+  async createNote({
+    userId,
+    title,
+    content,
+    summary,
+    category,
+  }: CreateNoteParams) {
     const note = await this.prisma.note.create({
       data: {
         title,
         content,
+        summary,
         userId,
+        category: category || null,
       },
     });
 

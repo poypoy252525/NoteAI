@@ -1,9 +1,9 @@
-import { GalleryVerticalEnd } from "lucide-react";
+import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -30,16 +32,26 @@ export function SignupForm({
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
+      setLoading(true);
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/register`,
-        form
+        form,
+        { withCredentials: true }
       );
       navigate("/");
     } catch (error) {
       console.error(error);
+      if (error instanceof AxiosError) {
+        toast.error("Error", {
+          description: error.response?.data.error,
+        });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,7 +109,8 @@ export function SignupForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="animate-spin" />}
                 Sign up
               </Button>
             </div>

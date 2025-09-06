@@ -24,7 +24,7 @@ export const createUserController = async (req: Request, res: Response) => {
     const existingUser = await userService.getUserByEmail(email);
 
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ error: "Email already in use" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

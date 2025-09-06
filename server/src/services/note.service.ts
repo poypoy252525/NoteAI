@@ -1,3 +1,4 @@
+import LLMRepository from "../repositories/llm/llm.interface";
 import NoteRepository from "../repositories/note.repository";
 
 type CreateNoteParams = {
@@ -8,9 +9,29 @@ type CreateNoteParams = {
 
 class NoteService {
   private noteRepository: NoteRepository = new NoteRepository();
+  private llmRepository: LLMRepository;
+
+  constructor(llmRepository: LLMRepository) {
+    this.llmRepository = llmRepository;
+  }
 
   async createNote({ userId, title, content }: CreateNoteParams) {
-    return this.noteRepository.createNote({ userId, title, content });
+    let summary: string = "";
+
+    if (content.length > 80) {
+      const result = await this.llmRepository.summarizeNote(content);
+      if (result) summary = result;
+    }
+
+    const category = await this.llmRepository.categorizeNote(content);
+
+    return this.noteRepository.createNote({
+      userId,
+      title,
+      content,
+      summary,
+      category,
+    });
   }
 
   async getNotesByUserId(userId: string) {
