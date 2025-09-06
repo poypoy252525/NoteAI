@@ -21,11 +21,21 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const originalRequest = error.config as any;
+
     if (
-      error.response?.status === 401 ||
-      (error.response?.status === 403 && !originalRequest._retry)
+      originalRequest?.url?.includes("/auth/refresh") ||
+      originalRequest?.url?.includes("/auth/login") ||
+      originalRequest?.url?.includes("/auth/register")
+    ) {
+      return Promise.reject(error);
+    }
+
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !originalRequest._retry
     ) {
       originalRequest._retry = true;
+      console.log("retrying");
       try {
         const { data } = await axios.post<{
           accessToken: string;
@@ -33,7 +43,9 @@ api.interceptors.response.use(
         }>(
           `${import.meta.env.VITE_API_URL!}/api/auth/refresh`,
           {},
-          { withCredentials: true }
+          {
+            withCredentials: true,
+          }
         );
 
         const newAccessToken = data.accessToken;
@@ -43,6 +55,8 @@ api.interceptors.response.use(
 
         if (originalRequest)
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return api(originalRequest);
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.status !== 401 && error.status !== 403)

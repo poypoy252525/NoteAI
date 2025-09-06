@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import UserService from "../services/user.service";
-import jwt from "jsonwebtoken";
 import "dotenv/config";
 import bcrypt from "bcrypt";
+import { generateAccessToken, generateRefreshToken } from "../functions/jwt";
 
 export const createUserSchema = z.object({
   email: z.email(),
@@ -31,27 +31,18 @@ export const createUserController = async (req: Request, res: Response) => {
 
     const user = await userService.createUser(email, hashedPassword);
 
-    const token = jwt.sign(
-      { userId: user?.id, email: user?.email },
-      process.env.JWT_SECRET!,
-      {
-        expiresIn: "15m",
-      }
-    );
-
-    const refreshToken = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_REFRESH_SECRET!,
-      {
-        expiresIn: "30d",
-      }
-    );
+    const token = generateAccessToken({ userId: user?.id, email: user?.email });
+    const refreshToken = generateRefreshToken({
+      userId: user.id,
+      email: user.email,
+    });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: "/",
     });
 
     return res.status(201).json({ token });

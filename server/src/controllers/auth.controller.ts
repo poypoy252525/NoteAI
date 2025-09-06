@@ -22,9 +22,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
   if (!decoded) return res.status(403).json({ error: "Invalid refresh token" });
 
   const payload = { userId: decoded.userId, email: decoded.email };
-  const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
-    expiresIn: "15m",
-  });
+  const newAccessToken = generateAccessToken(payload);
 
   res.json({ accessToken: newAccessToken, user: payload });
 };

@@ -17,11 +17,15 @@ export const authMiddleware = async (
     return res.sendStatus(401);
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-  if (!decoded) {
-    return res.status(401).json({ error: "Invalid access token" });
+    if (!decoded) {
+      return res.status(401).json({ error: "Invalid or expired access token" });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: "Invalid or expired access token" });
   }
-
-  next();
 };

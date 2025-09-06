@@ -28,6 +28,6 @@ router.post("/api/chat", generateResponseController);
 router.post("/api/auth/refresh", refreshTokenController);
 router.post("/api/auth/register", createUserController);
 router.post("/api/auth/login", loginController);
-router.post("/api/auth/logout", authMiddleware, logoutController);
+router.post("/api/auth/logout", logoutController);
 
 export default router;
