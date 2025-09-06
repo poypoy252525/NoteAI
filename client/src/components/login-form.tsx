@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd } from "lucide-react";
+import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -33,20 +35,26 @@ export function LoginForm({
 
   const navigate = useNavigate();
   const setAuth = useAuth((state) => state.setAuth);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (form: z.infer<typeof loginSchema>) => {
     try {
+      setLoading(true);
       const { data } = await axios.post<{
         accessToken: string;
         user: { email: string; userId: string };
       }>(`${import.meta.env.VITE_API_URL}/api/auth/login`, form, {
         withCredentials: true,
       });
-      console.log(data.accessToken);
       setAuth(data.accessToken, data.user);
       navigate("/");
     } catch (error) {
       console.error(error);
+      toast.error("Error", {
+        description: "Invalid email or password",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,7 +112,8 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="animate-spin" />}
                 Login
               </Button>
             </div>

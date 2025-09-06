@@ -2,7 +2,6 @@ import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { Toaster } from "sonner";
 
 const PrivateRoute = () => {
   const { accessToken, setAuth } = useAuth();
@@ -37,12 +36,7 @@ const PrivateRoute = () => {
     return <Navigate to="/login" />;
   }
 
-  return (
-    <div>
-      <Outlet />
-      <Toaster />
-    </div>
-  );
+  return <Outlet />;
 };
 
 export default PrivateRoute;
