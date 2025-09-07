@@ -26,7 +26,7 @@ export const createNoteController = async (req: Request, res: Response) => {
     });
     res.json(note);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: error });
   }
 };
 

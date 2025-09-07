@@ -9,15 +9,16 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { EllipsisVerticalIcon } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 interface Props {
   title: string;
   category: string | undefined;
-  content: string;
+  summary: string;
   createdAt: Date;
 }
 
-const NoteCard = ({ title, category, content, createdAt }: Props) => {
+const NoteCard = ({ title, category, summary, createdAt }: Props) => {
   return (
     <Card>
       <CardHeader>
@@ -30,11 +31,11 @@ const NoteCard = ({ title, category, content, createdAt }: Props) => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-2">{content}</p>
+        <p className="line-clamp-2">{summary}</p>
       </CardContent>
       <CardFooter>
         <p className="text-muted-foreground text-xs">
-          {new Date(createdAt).toLocaleString()}
+          {formatDistanceToNow(createdAt, { addSuffix: true })}
         </p>
       </CardFooter>
     </Card>
