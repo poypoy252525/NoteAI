@@ -4,12 +4,7 @@ import { z } from "zod";
 import GenAIRepository from "../repositories/llm/genai.repository";
 import OllamaRepository from "../repositories/llm/ollama.repository";
 
-const llmProvider =
-  process.env.NODE_ENV === "production"
-    ? new GenAIRepository()
-    : new OllamaRepository();
-
-const noteService = new NoteService(llmProvider);
+const noteService = new NoteService(new GenAIRepository());
 
 const createNoteSchema = z.object({
   title: z.string(),
