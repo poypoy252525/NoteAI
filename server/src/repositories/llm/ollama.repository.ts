@@ -12,11 +12,41 @@ class OllamaRepository implements LLMRepository {
   constructor(model: string = "gemma3:270m") {
     this.model = model;
   }
-  categorizeNote(note: string): Promise<string | undefined> {
-    throw new Error("Method not implemented.");
+  async categorizeNote(note: string): Promise<string | undefined> {
+    const response = await this.ollama.chat({
+      model: this.model,
+      messages: [
+        {
+          role: "system",
+          content:
+            "categorize this note without saying any explanation, the output must be the categorized version and nothing more. the category must not too long, perhaps 3 words at most you can exceed if really in need. \n\n",
+        },
+        {
+          role: "user",
+          content: note,
+        },
+      ],
+    });
+
+    return response.message.content;
   }
-  summarizeNote(note: string): Promise<string | undefined> {
-    throw new Error("Method not implemented.");
+  async summarizeNote(note: string): Promise<string | undefined> {
+    const response = await this.ollama.chat({
+      model: this.model,
+      messages: [
+        {
+          role: "system",
+          content:
+            "summarize this note without saying any explanation, the output must be the summarized version and nothing more. respond with less than or equal 300 tokens. \n\n",
+        },
+        {
+          role: "user",
+          content: note,
+        },
+      ],
+    });
+
+    return response.message.content;
   }
 
   async generateEmbeddingResponse(input: string) {

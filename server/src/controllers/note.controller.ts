@@ -2,8 +2,14 @@ import type { Request, Response } from "express";
 import NoteService from "../services/note.service";
 import { z } from "zod";
 import GenAIRepository from "../repositories/llm/genai.repository";
+import OllamaRepository from "../repositories/llm/ollama.repository";
 
-const noteService = new NoteService(new GenAIRepository());
+const llmProvider =
+  process.env.NODE_ENV === "production"
+    ? new GenAIRepository()
+    : new OllamaRepository();
+
+const noteService = new NoteService(llmProvider);
 
 const createNoteSchema = z.object({
   title: z.string(),
