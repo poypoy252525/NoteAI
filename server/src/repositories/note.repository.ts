@@ -36,6 +36,9 @@ class NoteRepository {
       where: {
         userId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return notes;

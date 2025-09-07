@@ -26,6 +26,9 @@ class OllamaRepository implements LLMRepository {
           content: note,
         },
       ],
+      options: {
+        temperature: 0.1,
+      },
     });
 
     return response.message.content;
