@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "npx prisma migrate dev && tsc && copyfiles -f \"./src/repositories/llm/prompt.txt\" \"./dist/repositories/llm\"",
+    "build": "npx prisma migrate deploy && npx prisma generate && tsc && copyfiles -f \"./src/repositories/llm/prompt.txt\" \"./dist/repositories/llm\"",
     "start": "node dist/index.js"
   },
   "keywords": [],

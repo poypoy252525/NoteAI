@@ -12,6 +12,9 @@ class OllamaRepository implements LLMRepository {
   constructor(model: string = "gemma3:270m") {
     this.model = model;
   }
+  generateEmbedding(text: string): Promise<number[] | undefined> {
+    throw new Error("Method not implemented.");
+  }
   async categorizeNote(note: string): Promise<string | undefined> {
     const response = await this.ollama.chat({
       model: this.model,
