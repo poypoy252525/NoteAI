@@ -9,6 +9,7 @@ import {
   refreshTokenController,
   logoutController,
 } from "./controllers/auth.controller";
+import semanticSearchRoutes from "./routes/semantic-search.routes";
 
 const router = Router();
 
@@ -29,5 +30,8 @@ router.post("/api/auth/refresh", refreshTokenController);
 router.post("/api/auth/register", createUserController);
 router.post("/api/auth/login", loginController);
 router.post("/api/auth/logout", logoutController);
+
+// Semantic search routes
+router.use("/api/semantic-search", semanticSearchRoutes);
 
 export default router;

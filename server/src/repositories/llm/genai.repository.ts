@@ -72,6 +72,28 @@ class GenAIRepository implements LLMRepository {
 
     return response.text;
   }
+
+  async generateEmbedding(text: string): Promise<number[] | undefined> {
+    try {
+      const response = await this.genAI.models.embedContent({
+        model: "gemini-embedding-001",
+        contents: [
+          {
+            parts: [{ text }],
+          },
+        ],
+        config: {
+          taskType: "SEMANTIC_SIMILARITY",
+          outputDimensionality: 1536,
+        },
+      });
+
+      return response.embeddings?.[0]?.values;
+    } catch (error) {
+      console.error("Error generating embedding:", error);
+      return undefined;
+    }
+  }
 }
 
 export default GenAIRepository;

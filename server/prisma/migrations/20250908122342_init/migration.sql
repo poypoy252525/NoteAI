@@ -1,6 +1,9 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "vector";
+
 -- CreateTable
 CREATE TABLE "public"."User" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,11 +14,13 @@ CREATE TABLE "public"."User" (
 
 -- CreateTable
 CREATE TABLE "public"."Note" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "content" TEXT NOT NULL,
     "category" VARCHAR(255),
-    "userId" TEXT NOT NULL,
+    "summary" TEXT,
+    "embedding" vector(1536),
+    "userId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -24,6 +29,9 @@ CREATE TABLE "public"."Note" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
+
+-- CreateIndex
+CREATE INDEX "note_embedding_idx" ON "public"."Note"("embedding");
 
 -- AddForeignKey
 ALTER TABLE "public"."Note" ADD CONSTRAINT "Note_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

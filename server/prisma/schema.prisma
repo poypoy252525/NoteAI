@@ -5,13 +5,15 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [vector]
 }
 
 model User {
@@ -24,13 +26,14 @@ model User {
 }
 
 model Note {
-  id        String   @id @db.Uuid @default(uuid())
-  title     String   @db.VarChar(255)
-  content   String   @db.Text
-  category  String?  @db.VarChar(255)
-  summary   String?  @db.Text
-  userId    String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String                        @id @db.Uuid @default(uuid())
+  title     String                        @db.VarChar(255)
+  content   String                        @db.Text
+  category  String?                       @db.VarChar(255)
+  summary   String?                       @db.Text
+  embedding Unsupported("vector(1536)")?
+  userId    String                        @db.Uuid
+  user      User                          @relation(fields: [userId], references: [id])
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
 }

@@ -2,7 +2,19 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-export const authMiddleware = async (
+// Extend Request interface to include user property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        email: string;
+      };
+    }
+  }
+}
+
+export const authenticateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -18,14 +30,23 @@ export const authMiddleware = async (
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
 
     if (!decoded) {
       return res.status(401).json({ error: "Invalid or expired access token" });
     }
+
+    // Add user info to request object
+    req.user = {
+      id: decoded.id || decoded.userId,
+      email: decoded.email,
+    };
 
     next();
   } catch (error) {
     return res.status(401).json({ error: "Invalid or expired access token" });
   }
 };
+
+// Keep the original export for backward compatibility
+export const authMiddleware = authenticateToken;
