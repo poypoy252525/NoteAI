@@ -22,7 +22,7 @@ const LogoutDialog = () => {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         <Button size="icon" variant="ghost">
           <LogOut />
         </Button>
