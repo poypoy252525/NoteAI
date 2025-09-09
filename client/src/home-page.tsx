@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { api } from "./services/axios-instance";
 import { useAuth } from "./stores/auth";
 import LogoutDialog from "./components/logout-dialog";
+import { Search } from "lucide-react";
 
 interface Note {
   title: string;
@@ -36,11 +37,26 @@ function HomePage() {
       </header>
       <div className="px-4 lg:px-8 pb-4 flex flex-col flex-1 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-2 py-6">
-          <Input placeholder="Search notes..." className="flex-1 max-w-md" />
+          <div className="relative flex-1 max-w-2xl">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Quick search..."
+              className="pl-10 cursor-pointer"
+              readOnly
+              onClick={() => window.location.href = '/search'}
+            />
+          </div>
+          <Button asChild variant="outline">
+            <Link to="/search">
+              <Search className="h-4 w-4 mr-2" />
+              AI Search
+            </Link>
+          </Button>
           <Button asChild>
             <Link to="/notes/new">New Note</Link>
           </Button>
         </div>
+
         {notes && notes.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {notes.map((note, index) => (

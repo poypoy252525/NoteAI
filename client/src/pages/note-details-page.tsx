@@ -6,6 +6,7 @@ import { ArrowLeft, Edit, Trash2, Calendar, Tag } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
+import { SimilarNotes } from "@/components/similar-notes";
 
 interface Note {
   title: string;
@@ -188,6 +189,9 @@ const NoteDetailsPage = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Similar Notes */}
+          <SimilarNotes noteId={note.id} />
         </div>
       </main>
     </div>

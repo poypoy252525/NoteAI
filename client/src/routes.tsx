@@ -6,6 +6,7 @@ import LoginPage from "./pages/login-page";
 import NoteDetailsPage from "./pages/note-details-page";
 import SignupPage from "./pages/signup-page";
 import CreateNotePage from "./pages/create-note-page";
+import SearchPage from "./pages/search-page";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "/notes/new",
         element: <CreateNotePage />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
       },
     ],
   },
