@@ -58,7 +58,7 @@ export function SignupForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2">
               <a
@@ -86,7 +86,16 @@ export function SignupForm({
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" {...field} />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        autoComplete="username"
+                        inputMode="email"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,7 +110,11 @@ export function SignupForm({
                     <FormControl>
                       <Input
                         type="password"
+                        id="new-password"
                         placeholder="Enter your password"
+                        autoComplete="new-password"
+                        autoCapitalize="none"
+                        spellCheck={false}
                         {...field}
                       />
                     </FormControl>

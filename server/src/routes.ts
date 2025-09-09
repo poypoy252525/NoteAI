@@ -10,28 +10,17 @@ import {
   logoutController,
 } from "./controllers/auth.controller";
 import semanticSearchRoutes from "./routes/semantic-search.routes";
+import authRoutes from "./routes/auth.routes";
+import usersRoutes from "./routes/users.routes";
 
 const router = Router();
 
-router.get("/api/test", (req, res) => {
+router.post("/chat", generateResponseController);
+router.use("/auth", authRoutes);
+router.get("/test", (req, res) => {
   res.json({ message: "Hello World" });
 });
-
-router.get(
-  "/api/users/:userId/notes",
-  authMiddleware,
-  getNotesByUserIdController
-);
-router.post("/api/users/:userId/notes", authMiddleware, createNoteController);
-
-router.post("/api/chat", generateResponseController);
-
-router.post("/api/auth/refresh", refreshTokenController);
-router.post("/api/auth/register", createUserController);
-router.post("/api/auth/login", loginController);
-router.post("/api/auth/logout", logoutController);
-
-// Semantic search routes
-router.use("/api/semantic-search", semanticSearchRoutes);
+router.use("/users", usersRoutes);
+router.use("/semantic-search", semanticSearchRoutes);
 
 export default router;
