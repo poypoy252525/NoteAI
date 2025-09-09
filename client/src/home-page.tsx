@@ -1,12 +1,11 @@
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LogoutDialog from "./components/logout-dialog";
 import NoteCard from "./components/note-card";
 import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
-import { useEffect, useState } from "react";
 import { api } from "./services/axios-instance";
 import { useAuth } from "./stores/auth";
-import LogoutDialog from "./components/logout-dialog";
-import { Search } from "lucide-react";
 
 interface Note {
   title: string;
@@ -37,7 +36,7 @@ function HomePage() {
       </header>
       <div className="px-4 lg:px-8 pb-4 flex flex-col flex-1 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-2 py-6">
-          <div className="relative flex-1 max-w-2xl">
+          {/* <div className="relative flex-1 max-w-2xl">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Quick search..."
@@ -45,10 +44,14 @@ function HomePage() {
               readOnly
               onClick={() => window.location.href = '/search'}
             />
-          </div>
-          <Button asChild variant="outline">
+          </div> */}
+          <Button
+            asChild
+            variant="outline"
+            className="flex-1 justify-start lg:flex-none lg:min-w-[250px] lg:justify-center"
+          >
             <Link to="/search">
-              <Search className="h-4 w-4 mr-2" />
+              <Search />
               AI Search
             </Link>
           </Button>
