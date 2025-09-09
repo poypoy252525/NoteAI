@@ -61,48 +61,90 @@ const CreateNoteForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-6">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your title" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Content</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Enter your content"
-                    rows={20}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex justify-end py-4">
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="animate-spin" />}
-            Create note
-          </Button>
-        </div>
-      </form>
-    </Form>
+    <div className="space-y-6">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid gap-6">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-medium">Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter a descriptive title for your note"
+                      className="text-base"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-medium">
+                    Category
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g., Work, Personal, Ideas"
+                      className="text-base"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-medium">
+                    Content
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Write your note content here..."
+                      className="max-h-[400px] text-base leading-relaxed resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-6 border-t">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="sm:order-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="sm:order-2 min-w-[120px]"
+            >
+              {loading && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
+              Create Note
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 

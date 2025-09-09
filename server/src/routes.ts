@@ -12,15 +12,14 @@ import {
 import semanticSearchRoutes from "./routes/semantic-search.routes";
 import authRoutes from "./routes/auth.routes";
 import usersRoutes from "./routes/users.routes";
+import notesRoutes from "./routes/notes.routes";
 
 const router = Router();
 
 router.post("/chat", generateResponseController);
 router.use("/auth", authRoutes);
-router.get("/test", (req, res) => {
-  res.json({ message: "Hello World" });
-});
 router.use("/users", usersRoutes);
 router.use("/semantic-search", semanticSearchRoutes);
+router.use("/notes", notesRoutes);
 
 export default router;

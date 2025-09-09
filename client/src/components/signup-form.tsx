@@ -60,40 +60,40 @@ export function SignupForm({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-2">
-              <a
-                href="#"
-                className="flex flex-col items-center gap-2 font-medium"
-              >
-                <div className="flex size-8 items-center justify-center rounded-md">
-                  <GalleryVerticalEnd className="size-6" />
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <GalleryVerticalEnd className="size-8 text-primary" />
                 </div>
-                <span className="sr-only">NoteAI</span>
-              </a>
-              <h1 className="text-xl font-bold">Welcome to NoteAI</h1>
+                <h1 className="text-2xl font-bold tracking-tight">Join NoteAI</h1>
+                <p className="text-muted-foreground text-sm">
+                  Create your account to get started
+                </p>
+              </div>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <Button variant="link" className="p-0">
-                  <Link to="/login">Login</Link>
+                <Button variant="link" className="p-0 h-auto font-semibold">
+                  <Link to="/login">Sign in</Link>
                 </Button>
               </div>
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-sm font-medium">Email</FormLabel>
                     <FormControl>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder="Enter your email address"
                         autoComplete="username"
                         inputMode="email"
                         autoCapitalize="none"
                         spellCheck={false}
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -106,15 +106,16 @@ export function SignupForm({
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-sm font-medium">Password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
                         id="new-password"
-                        placeholder="Enter your password"
+                        placeholder="Create a secure password"
                         autoComplete="new-password"
                         autoCapitalize="none"
                         spellCheck={false}
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -122,9 +123,9 @@ export function SignupForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading && <Loader2 className="animate-spin" />}
-                Sign up
+              <Button type="submit" className="w-full h-11 mt-2" disabled={loading}>
+                {loading && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
+                Create Account
               </Button>
             </div>
           </div>

@@ -5,16 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Edit, Trash2, Calendar, Tag } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { api } from "@/services/axios-instance";
+import { useAuth } from "@/stores/auth";
 
 interface Note {
-  id: string;
   title: string;
   content: string;
-  category: string | null;
-  summary: string | null;
-  createdAt: string;
-  updatedAt: string;
   userId: string;
+  summary: string | null;
+  category: string | null;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const NoteDetailsPage = () => {
@@ -27,10 +28,11 @@ const NoteDetailsPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       if (!id) return;
-      
+
       try {
         setLoading(true);
-        const response = await api.get(`/notes/${id}`);
+        const { userId } = useAuth.getState().user!;
+        const response = await api.get<Note>(`/users/${userId}/notes/${id}`);
         setNote(response.data);
       } catch (err) {
         setError("Failed to load note");
@@ -44,10 +46,15 @@ const NoteDetailsPage = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!note || !window.confirm("Are you sure you want to delete this note?")) return;
-    
+    if (!note || !window.confirm("Are you sure you want to delete this note?"))
+      return;
+
     try {
-      await api.delete(`/notes/${note.id}`);
+      await api.delete(`/notes/${note.id}`, {
+        params: {
+          userId: useAuth.getState().user?.userId,
+        },
+      });
       navigate("/");
     } catch (err) {
       console.error("Error deleting note:", err);
@@ -69,7 +76,9 @@ const NoteDetailsPage = () => {
       <div className="flex flex-col min-h-svh">
         <div className="flex items-center justify-center flex-1">
           <div className="text-center space-y-4">
-            <p className="text-muted-foreground text-lg">{error || "Note not found"}</p>
+            <p className="text-muted-foreground text-lg">
+              {error || "Note not found"}
+            </p>
             <Button asChild variant="outline">
               <Link to="/">Back to Notes</Link>
             </Button>
@@ -91,7 +100,9 @@ const NoteDetailsPage = () => {
                 Back
               </Button>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-semibold truncate max-w-md">{note.title}</h1>
+                <h1 className="text-xl font-semibold truncate max-w-md">
+                  {note.title}
+                </h1>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -124,7 +135,11 @@ const NoteDetailsPage = () => {
                   <Calendar className="h-4 w-4" />
                   <span>Created {format(new Date(note.createdAt), "PPP")}</span>
                   <span className="text-xs">
-                    ({formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })})
+                    (
+                    {formatDistanceToNow(new Date(note.createdAt), {
+                      addSuffix: true,
+                    })}
+                    )
                   </span>
                 </div>
                 {note.category && (
@@ -138,7 +153,10 @@ const NoteDetailsPage = () => {
               </div>
               {note.updatedAt !== note.createdAt && (
                 <p className="text-xs text-muted-foreground">
-                  Last updated {formatDistanceToNow(new Date(note.updatedAt), { addSuffix: true })}
+                  Last updated{" "}
+                  {formatDistanceToNow(new Date(note.updatedAt), {
+                    addSuffix: true,
+                  })}
                 </p>
               )}
             </CardHeader>
@@ -151,7 +169,9 @@ const NoteDetailsPage = () => {
                 <CardTitle className="text-lg">Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{note.summary}</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {note.summary}
+                </p>
               </CardContent>
             </Card>
           )}

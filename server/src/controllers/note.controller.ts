@@ -29,9 +29,13 @@ export const createNoteController = async (req: Request, res: Response) => {
 
     // Generate embedding for the new note in the background
     const textToEmbed = `${title}\n\n${content}`;
-    semanticSearchService.generateAndStoreEmbedding(note.id, textToEmbed)
-      .catch(error => {
-        console.error(`Failed to generate embedding for note ${note.id}:`, error);
+    semanticSearchService
+      .generateAndStoreEmbedding(note.id, textToEmbed)
+      .catch((error) => {
+        console.error(
+          `Failed to generate embedding for note ${note.id}:`,
+          error
+        );
       });
 
     res.json(note);
@@ -48,6 +52,16 @@ export const getNotesByUserIdController = async (
     const { userId } = req.params;
     const notes = await noteService.getNotesByUserId(userId!);
     res.json(notes);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error", details: error });
+  }
+};
+
+export const getNoteByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const note = await noteService.getNoteById(id!);
+    res.json(note);
   } catch (error) {
     res.status(500).json({ error: "Internal server error", details: error });
   }

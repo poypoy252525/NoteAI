@@ -37,6 +37,10 @@ class NoteService {
   async getNotesByUserId(userId: string) {
     return this.noteRepository.getNotesByUserId(userId);
   }
+
+  async getNoteById(id: string) {
+    return this.noteRepository.getNoteById(id);
+  }
 }
 
 export default NoteService;

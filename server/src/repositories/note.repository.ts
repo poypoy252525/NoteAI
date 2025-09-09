@@ -43,6 +43,16 @@ class NoteRepository {
 
     return notes;
   }
+
+  async getNoteById(id: string) {
+    const note = await this.prisma.note.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return note;
+  }
 }
 
 export default NoteRepository;

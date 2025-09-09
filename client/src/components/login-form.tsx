@@ -64,40 +64,40 @@ export function LoginForm({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-2">
-              <a
-                href="#"
-                className="flex flex-col items-center gap-2 font-medium"
-              >
-                <div className="flex size-8 items-center justify-center rounded-md">
-                  <GalleryVerticalEnd className="size-6" />
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <GalleryVerticalEnd className="size-8 text-primary" />
                 </div>
-                <span className="sr-only">NoteAI</span>
-              </a>
-              <h1 className="text-xl font-bold">Welcome to NoteAI</h1>
+                <h1 className="text-2xl font-bold tracking-tight">Welcome to NoteAI</h1>
+                <p className="text-muted-foreground text-sm">
+                  Sign in to your account to continue
+                </p>
+              </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Button variant="link" className="p-0">
+                <Button variant="link" className="p-0 h-auto font-semibold">
                   <Link to="/register">Sign up</Link>
                 </Button>
               </div>
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-sm font-medium">Email</FormLabel>
                     <FormControl>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder="Enter your email address"
                         autoComplete="username"
                         inputMode="email"
                         autoCapitalize="none"
                         spellCheck={false}
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -110,7 +110,7 @@ export function LoginForm({
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-sm font-medium">Password</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -120,13 +120,14 @@ export function LoginForm({
                           autoComplete="current-password"
                           autoCapitalize="none"
                           spellCheck={false}
+                          className="h-11 pr-10"
                           {...field}
                         />
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-muted-foreground"
+                          className="absolute right-0 top-0 h-11 w-10 hover:bg-transparent text-muted-foreground hover:text-foreground"
                           onClick={() => setShowPassword(!showPassword)}
                         >
                           {showPassword ? (
@@ -144,9 +145,9 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading && <Loader2 className="animate-spin" />}
-                Login
+              <Button type="submit" className="w-full h-11 mt-2" disabled={loading}>
+                {loading && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
+                Sign In
               </Button>
             </div>
           </div>
