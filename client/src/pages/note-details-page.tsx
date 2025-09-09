@@ -95,9 +95,8 @@ const NoteDetailsPage = () => {
         <div className="max-w-4xl mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
+              <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+                <ArrowLeft />
               </Button>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-semibold truncate max-w-md">

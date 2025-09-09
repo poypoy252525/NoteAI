@@ -20,7 +20,7 @@ interface Props {
 
 const NoteCard = ({ title, category, summary, createdAt }: Props) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="line-clamp-2">{title}</CardTitle>
         <CardDescription className="truncate">

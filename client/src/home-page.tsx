@@ -44,7 +44,11 @@ function HomePage() {
         {notes && notes.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {notes.map((note, index) => (
-              <Link to={`/notes/${note.id}`} key={index} className="transition-transform hover:scale-105">
+              <Link
+                to={`/notes/${note.id}`}
+                key={index}
+                className="transition-transform hover:scale-[1.015] h-full"
+              >
                 <NoteCard
                   title={note.title}
                   category={note.category || undefined}
