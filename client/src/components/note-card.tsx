@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { EllipsisVerticalIcon } from "lucide-react";
+import { Clock, EllipsisVerticalIcon } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface Props {
@@ -36,9 +36,14 @@ const NoteCard = ({ title, category, summary, createdAt }: Props) => {
         <p className="line-clamp-2 leading-tight">{summary}</p>
       </CardContent>
       <CardFooter>
-        <p className="text-muted-foreground text-xs">
-          {formatDistanceToNow(createdAt, { addSuffix: true })}
-        </p>
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <Clock className="h-3 w-3" />
+          <span>
+            {formatDistanceToNow(createdAt, {
+              addSuffix: true,
+            })}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
