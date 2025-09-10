@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
+import { getHtmlPreview } from "@/utils/html-utils";
 import { type SemanticSearchResult } from "@/services/semantic-search.service";
 import { Sparkles } from "lucide-react";
 
@@ -98,7 +99,7 @@ export const SemanticSearchResults = ({
               </CardHeader>
               <CardContent>
                 <p className="line-clamp-2 leading-tight text-sm">
-                  {note.summary || note.content.substring(0, 100) + "..."}
+                  {note.summary || getHtmlPreview(note.content, 100)}
                 </p>
                 <p className="text-muted-foreground text-xs mt-2">
                   {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}

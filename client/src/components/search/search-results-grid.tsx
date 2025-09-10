@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatDistanceToNow } from "date-fns";
 import { type SemanticSearchResult } from "@/services/semantic-search.service";
-import { Sparkles, Clock, Hash } from "lucide-react";
+import { getHtmlPreview } from "@/utils/html-utils";
+import { formatDistanceToNow } from "date-fns";
+import { Clock, Hash, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface SearchResultsGridProps {
   results: SemanticSearchResult[];
@@ -43,7 +44,7 @@ export const SearchResultsGrid = ({
             </CardHeader>
             <CardContent className="pt-0">
               <p className="line-clamp-3 leading-relaxed text-sm text-muted-foreground mb-3">
-                {note.summary || note.content.substring(0, 120) + "..."}
+                {note.summary || getHtmlPreview(note.content, 120)}
               </p>
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />

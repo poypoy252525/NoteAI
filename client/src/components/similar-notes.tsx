@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { formatDistanceToNow } from "date-fns";
-import { useSemanticSearch } from "@/hooks/use-semantic-search";
 import { Sparkles, ChevronRight } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { getHtmlPreview } from "@/utils/html-utils";
+import { useSemanticSearch } from "@/hooks/use-semantic-search";
 
 interface SimilarNotesProps {
   noteId: string;
@@ -70,7 +71,8 @@ export const SimilarNotes = ({ noteId, className }: SimilarNotesProps) => {
             <p className="text-destructive text-sm">{error}</p>
           ) : results.length > 0 ? (
             <div className="space-y-3">
-              {results.map((note) => (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              {results.map((note: any) => (
                 <Link
                   key={note.id}
                   to={`/notes/${note.id}`}
@@ -82,7 +84,7 @@ export const SimilarNotes = ({ noteId, className }: SimilarNotesProps) => {
                         {note.title}
                       </h4>
                       <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
-                        {note.summary || note.content.substring(0, 100) + "..."}
+                        {note.summary || getHtmlPreview(note.content, 100)}
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">

@@ -11,13 +11,13 @@ import {
   FormControl,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import RichTextEditor from "./editor/rich-text-editor-wrapper";
 
 const createNoteSchema = z.object({
   title: z.string().trim().min(3, "Title must be at least 3 characters long"),
@@ -112,10 +112,10 @@ const CreateNoteForm = () => {
                     Content
                   </FormLabel>
                   <FormControl>
-                    <Textarea
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
                       placeholder="Write your note content here..."
-                      className="max-h-[400px] text-base leading-relaxed resize-none"
-                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

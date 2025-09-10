@@ -41,6 +41,10 @@ class NoteService {
   async getNoteById(id: string) {
     return this.noteRepository.getNoteById(id);
   }
+
+  async deleteNote(id: string) {
+    return this.noteRepository.deleteNote(id);
+  }
 }
 
 export default NoteService;

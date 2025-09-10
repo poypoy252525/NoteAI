@@ -2,11 +2,33 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Edit, Trash2, Calendar, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Calendar,
+  Tag,
+  Clock,
+  FileText,
+} from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
 import { SimilarNotes } from "@/components/similar-notes";
+import { toast } from "sonner";
 
 interface Note {
   title: string;
@@ -47,18 +69,17 @@ const NoteDetailsPage = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!note || !window.confirm("Are you sure you want to delete this note?"))
-      return;
+    if (!note) return;
+
+    const { userId } = useAuth.getState().user!;
 
     try {
-      await api.delete(`/notes/${note.id}`, {
-        params: {
-          userId: useAuth.getState().user?.userId,
-        },
-      });
+      await api.delete(`/users/${userId}/notes/${note.id}`, {});
+      toast.success("Note deleted successfully");
       navigate("/");
     } catch (err) {
       console.error("Error deleting note:", err);
+      toast.error("Failed to delete note");
     }
   };
 
@@ -66,7 +87,10 @@ const NoteDetailsPage = () => {
     return (
       <div className="flex flex-col min-h-svh">
         <div className="flex items-center justify-center flex-1">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground">Loading note...</p>
+          </div>
         </div>
       </div>
     );
@@ -90,14 +114,19 @@ const NoteDetailsPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-svh">
+    <div className="flex flex-col min-h-svh bg-background">
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 lg:px-8 py-4">
+        <div className="container max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-                <ArrowLeft />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/")}
+                className="hover:bg-secondary"
+              >
+                <ArrowLeft className="h-5 w-5" />
               </Button>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-semibold truncate max-w-md">
@@ -106,92 +135,119 @@ const NoteDetailsPage = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
+              <Button variant="outline" size="sm" className="gap-2">
+                <Edit className="h-4 w-4" />
+                <span className="hidden sm:inline">Edit</span>
               </Button>
-              <Button variant="destructive" size="sm" onClick={handleDelete}>
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="sm" className="gap-2">
+                    <Trash2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Delete</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your note and remove it from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 lg:px-8 py-6">
-        <div className="space-y-6">
-          {/* Note Title - Mobile */}
-          <div className="sm:hidden">
-            <h1 className="text-2xl font-bold leading-tight">{note.title}</h1>
-          </div>
+      <main className="flex-1 container max-w-6xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content Column */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Note Title - Mobile */}
+            <div className="sm:hidden">
+              <h1 className="text-3xl font-bold leading-tight break-words">{note.title}</h1>
+            </div>
 
-          {/* Note Metadata */}
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  <span>Created {format(new Date(note.createdAt), "PPP")}</span>
-                  <span className="text-xs">
-                    (
-                    {formatDistanceToNow(new Date(note.createdAt), {
-                      addSuffix: true,
-                    })}
-                    )
-                  </span>
-                </div>
-                {note.category && (
-                  <div className="flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-muted-foreground" />
-                    <span className="px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-md">
-                      {note.category}
-                    </span>
-                  </div>
-                )}
-              </div>
-              {note.updatedAt !== note.createdAt && (
-                <p className="text-xs text-muted-foreground">
-                  Last updated{" "}
-                  {formatDistanceToNow(new Date(note.updatedAt), {
-                    addSuffix: true,
-                  })}
-                </p>
-              )}
-            </CardHeader>
-          </Card>
-
-          {/* Note Summary */}
-          {note.summary && (
-            <Card>
+            {/* Note Metadata */}
+            <Card className="shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Summary</CardTitle>
+                <div className="space-y-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Badge variant="secondary" className="gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {format(new Date(note.createdAt), "MMM dd, yyyy")}
+                    </Badge>
+                    {note.category && (
+                      <Badge variant="outline" className="gap-1">
+                        <Tag className="h-3 w-3" />
+                        {note.category}
+                      </Badge>
+                    )}
+                    {note.updatedAt !== note.createdAt && (
+                      <Badge variant="secondary" className="gap-1">
+                        <Clock className="h-3 w-3" />
+                        Updated{" "}
+                        {formatDistanceToNow(new Date(note.updatedAt), {
+                          addSuffix: true,
+                        })}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+
+            {/* Note Summary */}
+            {note.summary && (
+              <Card className="shadow-sm border-l-4 border-l-primary">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    AI Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed break-words">
+                    {note.summary}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Note Content */}
+            <Card className="shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Content</CardTitle>
+                <Separator className="mt-2" />
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {note.summary}
-                </p>
+                <div
+                  className="prose prose-sm sm:prose lg:prose-lg max-w-none dark:prose-invert overflow-x-auto break-words"
+                  style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                  dangerouslySetInnerHTML={{ __html: note.content }}
+                />
               </CardContent>
             </Card>
-          )}
+          </div>
 
-          {/* Note Content */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Content</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-sm sm:prose max-w-none dark:prose-invert">
-                <div className="whitespace-pre-wrap leading-relaxed">
-                  {note.content}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Similar Notes */}
-          <SimilarNotes noteId={note.id} />
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Similar Notes */}
+            <div className="sticky top-20">
+              <SimilarNotes noteId={note.id} />
+            </div>
+          </div>
         </div>
       </main>
     </div>

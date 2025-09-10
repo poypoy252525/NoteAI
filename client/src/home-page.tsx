@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getHtmlPreview } from "@/utils/html-utils";
 import LogoutDialog from "./components/logout-dialog";
 import NoteCard from "./components/note-card";
 import { Button } from "./components/ui/button";
@@ -71,7 +72,7 @@ function HomePage() {
                 <NoteCard
                   title={note.title}
                   category={note.category || undefined}
-                  summary={note.summary || note.content}
+                  summary={note.summary || getHtmlPreview(note.content)}
                   createdAt={note.createdAt}
                 />
               </Link>

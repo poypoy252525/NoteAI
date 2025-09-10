@@ -66,3 +66,26 @@ export const getNoteByIdController = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error", details: error });
   }
 };
+
+export const deleteNoteController = async (req: Request, res: Response) => {
+  try {
+    const { id, userId } = req.params;
+
+    // First check if the note exists and belongs to the user
+    const note = await noteService.getNoteById(id!);
+    if (!note) {
+      return res.status(404).json({ error: "Note not found" });
+    }
+
+    if (note.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own notes" });
+    }
+
+    await noteService.deleteNote(id!);
+    res.json({ message: "Note deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error", details: error });
+  }
+};

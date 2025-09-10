@@ -53,6 +53,16 @@ class NoteRepository {
 
     return note;
   }
+
+  async deleteNote(id: string) {
+    const note = await this.prisma.note.delete({
+      where: {
+        id,
+      },
+    });
+
+    return note;
+  }
 }
 
 export default NoteRepository;

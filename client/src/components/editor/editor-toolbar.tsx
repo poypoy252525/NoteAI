@@ -16,7 +16,6 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  AlignJustify,
   List,
   ListOrdered,
   Quote,
@@ -103,7 +102,7 @@ const EditorToolbar = ({ editor }: Props) => {
   };
 
   return (
-    <div className="bg-background rounded-md p-2 flex flex-wrap items-center gap-2">
+    <div className="bg-background border-b p-2 flex flex-wrap items-center gap-1 sm:gap-2 overflow-x-auto">
       {/* Undo/Redo */}
       <div className="flex items-center gap-1">
         <Button
@@ -111,6 +110,7 @@ const EditorToolbar = ({ editor }: Props) => {
           size="sm"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
+          className="h-8 w-8 p-0 sm:h-9 sm:w-auto sm:px-2"
         >
           <Undo className="h-4 w-4" />
         </Button>
@@ -119,17 +119,18 @@ const EditorToolbar = ({ editor }: Props) => {
           size="sm"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
+          className="h-8 w-8 p-0 sm:h-9 sm:w-auto sm:px-2"
         >
           <Redo className="h-4 w-4" />
         </Button>
       </div>
 
-      <div className="w-px h-6 bg-border" />
+      <div className="w-px h-6 bg-border hidden sm:block" />
 
-      {/* Headings Dropdown */}
+      {/* Headings Dropdown - Hidden on mobile */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 hidden sm:flex">
             {getCurrentHeading()}
             <ChevronDown className="h-4 w-4" />
           </Button>
@@ -155,21 +156,23 @@ const EditorToolbar = ({ editor }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <div className="w-px h-6 bg-border" />
+      <div className="w-px h-6 bg-border hidden sm:block" />
 
-      {/* Text Formatting */}
+      {/* Essential Text Formatting (mobile-first) */}
       <div className="flex items-center gap-1">
         <Toggle
           size="sm"
           pressed={editor.isActive("bold")}
           onPressedChange={() => editor.chain().focus().toggleBold().run()}
+          className="h-8 w-8 p-0"
         >
-          <Bold />
+          <Bold className="h-4 w-4" />
         </Toggle>
         <Toggle
           size="sm"
           pressed={editor.isActive("italic")}
           onPressedChange={() => editor.chain().focus().toggleItalic().run()}
+          className="h-8 w-8 p-0"
         >
           <Italic className="h-4 w-4" />
         </Toggle>
@@ -177,58 +180,17 @@ const EditorToolbar = ({ editor }: Props) => {
           size="sm"
           pressed={editor.isActive("underline")}
           onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
+          className="h-8 w-8 p-0 hidden sm:flex"
         >
           <Underline className="h-4 w-4" />
         </Toggle>
-        <Toggle
-          size="sm"
-          pressed={editor.isActive("strike")}
-          onPressedChange={() => editor.chain().focus().toggleStrike().run()}
-        >
-          <Strikethrough className="h-4 w-4" />
-        </Toggle>
-        <Toggle
-          size="sm"
-          pressed={editor.isActive("code")}
-          onPressedChange={() => editor.chain().focus().toggleCode().run()}
-        >
-          <Code className="h-4 w-4" />
-        </Toggle>
-      </div>
-
-      <div className="w-px h-6 bg-border" />
-
-      {/* Text Alignment */}
-      <ToggleGroup
-        type="single"
-        value={getCurrentAlignment()}
-        onValueChange={handleAlignmentChange}
-        size="sm"
-      >
-        <ToggleGroupItem value="left">
-          <AlignLeft className="h-4 w-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="center">
-          <AlignCenter className="h-4 w-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="right">
-          <AlignRight className="h-4 w-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="justify">
-          <AlignJustify className="h-4 w-4" />
-        </ToggleGroupItem>
-      </ToggleGroup>
-
-      <div className="w-px h-6 bg-border" />
-
-      {/* Lists and Quote */}
-      <div className="flex items-center gap-1">
         <Toggle
           size="sm"
           pressed={editor.isActive("bulletList")}
           onPressedChange={() =>
             editor.chain().focus().toggleBulletList().run()
           }
+          className="h-8 w-8 p-0"
         >
           <List className="h-4 w-4" />
         </Toggle>
@@ -238,8 +200,31 @@ const EditorToolbar = ({ editor }: Props) => {
           onPressedChange={() =>
             editor.chain().focus().toggleOrderedList().run()
           }
+          className="h-8 w-8 p-0"
         >
           <ListOrdered className="h-4 w-4" />
+        </Toggle>
+      </div>
+
+      {/* Additional formatting - tablet and desktop only */}
+      <div className="hidden md:flex items-center gap-1">
+        <div className="w-px h-6 bg-border" />
+        
+        <Toggle
+          size="sm"
+          pressed={editor.isActive("strike")}
+          onPressedChange={() => editor.chain().focus().toggleStrike().run()}
+          className="h-8 w-8 p-0"
+        >
+          <Strikethrough className="h-4 w-4" />
+        </Toggle>
+        <Toggle
+          size="sm"
+          pressed={editor.isActive("code")}
+          onPressedChange={() => editor.chain().focus().toggleCode().run()}
+          className="h-8 w-8 p-0"
+        >
+          <Code className="h-4 w-4" />
         </Toggle>
         <Toggle
           size="sm"
@@ -247,9 +232,31 @@ const EditorToolbar = ({ editor }: Props) => {
           onPressedChange={() =>
             editor.chain().focus().toggleBlockquote().run()
           }
+          className="h-8 w-8 p-0"
         >
           <Quote className="h-4 w-4" />
         </Toggle>
+      </div>
+
+      {/* Text Alignment - desktop only */}
+      <div className="hidden lg:flex items-center">
+        <div className="w-px h-6 bg-border mr-2" />
+        <ToggleGroup
+          type="single"
+          value={getCurrentAlignment()}
+          onValueChange={handleAlignmentChange}
+          size="sm"
+        >
+          <ToggleGroupItem value="left" className="h-8 w-8 p-0">
+            <AlignLeft className="h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="center" className="h-8 w-8 p-0">
+            <AlignCenter className="h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="right" className="h-8 w-8 p-0">
+            <AlignRight className="h-4 w-4" />
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
     </div>
   );
