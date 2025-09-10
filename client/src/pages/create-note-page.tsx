@@ -1,4 +1,4 @@
-import CreateNoteForm from "../components/create-note-form";
+import RichTextEditor from "@/components/editor/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ const CreateNotePage = () => {
 
       {/* Main Content */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 lg:px-8 py-6">
-        <CreateNoteForm />
+        <RichTextEditor />
       </main>
     </div>
   );
