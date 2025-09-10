@@ -22,7 +22,7 @@ class GenAIRepository implements LLMRepository {
       model: this.modelName,
       config: {
         systemInstruction:
-          "categorize this note without saying any explanation, the output must be the categorized version and nothing more. the category must not too long, perhaps 3 words at most you can exceed if really in need. \n\n",
+          "categorize this note without saying any explanation, the output must be the categorized version and nothing more. the category must not too long, perhaps 3 words at most that describe the main topic of the note. \n\n",
       },
       contents: [
         {

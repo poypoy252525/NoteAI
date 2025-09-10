@@ -9,30 +9,33 @@ interface SearchResultsGridProps {
   className?: string;
 }
 
-export const SearchResultsGrid = ({ results, className }: SearchResultsGridProps) => {
+export const SearchResultsGrid = ({
+  results,
+  className,
+}: SearchResultsGridProps) => {
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 ${className}`}>
+    <div
+      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 ${className}`}
+    >
       {results.map((note) => (
         <Link
           key={note.id}
           to={`/notes/${note.id}`}
-          className="transition-transform hover:scale-[1.015] h-full"
+          className="transition-transform hover:scale-[1.015] h-full w-full"
         >
-          <Card className="h-full hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
+          <Card className="h-full w-full hover:shadow-md transition-shadow overflow-hidden">
+            <CardHeader className="pb-3 flex flex-col">
               <CardTitle className="line-clamp-2 text-base leading-tight">
                 {note.title}
               </CardTitle>
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <Hash className="h-3 w-3" />
-                  <span className="truncate">
-                    {note.category || "General"}
-                  </span>
+              <div className="flex items-center justify-between text-xs gap-2 w-full">
+                <div className="flex items-center gap-1 text-muted-foreground flex-1 overflow-hidden">
+                  <Hash className="size-3 shrink-0" />
+                  <span className="truncate">{note.category || "General"}</span>
                 </div>
                 {note.similarity && (
                   <div className="flex items-center gap-1 text-primary font-medium">
-                    <Sparkles className="h-3 w-3" />
+                    <Sparkles className="size-3" />
                     <span>{Math.round(note.similarity * 100)}%</span>
                   </div>
                 )}
@@ -45,7 +48,9 @@ export const SearchResultsGrid = ({ results, className }: SearchResultsGridProps
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
                 <span>
-                  {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
+                  {formatDistanceToNow(new Date(note.createdAt), {
+                    addSuffix: true,
+                  })}
                 </span>
               </div>
             </CardContent>
