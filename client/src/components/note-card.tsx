@@ -1,6 +1,5 @@
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -8,8 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { Clock, EllipsisVerticalIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Clock } from "lucide-react";
 
 interface Props {
   title: string;
@@ -26,14 +24,11 @@ const NoteCard = ({ title, category, summary, createdAt }: Props) => {
         <CardDescription className="truncate">
           {category ? category : "General"}
         </CardDescription>
-        <CardAction>
-          <Button size="icon" variant="ghost">
-            <EllipsisVerticalIcon />
-          </Button>
-        </CardAction>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-2 leading-tight">{summary}</p>
+        <p className="line-clamp-2 leading-tight text-muted-foreground">
+          {summary}
+        </p>
       </CardContent>
       <CardFooter>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
