@@ -71,7 +71,7 @@ function HomePage() {
                 <NoteCard
                   title={note.title}
                   category={note.category || undefined}
-                  summary={note.summary || "No summary"}
+                  summary={note.summary || note.content}
                   createdAt={note.createdAt}
                 />
               </Link>
