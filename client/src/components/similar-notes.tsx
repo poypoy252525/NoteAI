@@ -6,6 +6,7 @@ import { Sparkles, ChevronRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { getHtmlPreview } from "@/utils/html-utils";
 import { useSemanticSearch } from "@/hooks/use-semantic-search";
+import type { SemanticSearchResult } from "@/services/semantic-search.service";
 
 interface SimilarNotesProps {
   noteId: string;
@@ -53,7 +54,7 @@ export const SimilarNotes = ({ noteId, className }: SimilarNotesProps) => {
       </CardHeader>
 
       {isExpanded && (
-        <CardContent>
+        <CardContent className="max-h-[65vh] overflow-auto">
           {loading ? (
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -71,8 +72,7 @@ export const SimilarNotes = ({ noteId, className }: SimilarNotesProps) => {
             <p className="text-destructive text-sm">{error}</p>
           ) : results.length > 0 ? (
             <div className="space-y-3">
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              {results.map((note: any) => (
+              {results.map((note: SemanticSearchResult) => (
                 <Link
                   key={note.id}
                   to={`/notes/${note.id}`}

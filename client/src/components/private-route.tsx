@@ -3,6 +3,7 @@ import { useAuth } from "@/stores/auth";
 import { useEffect, useState } from "react";
 import SessionLoader from "./session-loader";
 import { Navigate, Outlet } from "react-router-dom";
+import Navbar from "./navbar";
 
 const PrivateRoute = () => {
   const { accessToken, setAuth } = useAuth();
@@ -37,7 +38,12 @@ const PrivateRoute = () => {
     return <Navigate to="/login" />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 };
 
 export default PrivateRoute;

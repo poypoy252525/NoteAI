@@ -86,6 +86,19 @@ const NoteDetailsPage = () => {
   if (loading) {
     return (
       <div className="flex flex-col min-h-svh">
+        <main className="container max-w-6xl mx-auto px-4 py-6 w-full">
+          <div className="mb-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/")}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Back</span>
+            </Button>
+          </div>
+        </main>
         <div className="flex items-center justify-center flex-1">
           <div className="space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
@@ -99,6 +112,19 @@ const NoteDetailsPage = () => {
   if (error || !note) {
     return (
       <div className="flex flex-col min-h-svh">
+        <main className="container max-w-6xl mx-auto px-4 py-6 w-full">
+          <div className="mb-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/")}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Back</span>
+            </Button>
+          </div>
+        </main>
         <div className="flex items-center justify-center flex-1">
           <div className="text-center space-y-4">
             <p className="text-muted-foreground text-lg">
@@ -115,68 +141,55 @@ const NoteDetailsPage = () => {
 
   return (
     <div className="flex flex-col min-h-svh bg-background">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/")}
-                className="hover:bg-secondary"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-semibold truncate max-w-md">
-                  {note.title}
-                </h1>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2">
-                <Edit className="h-4 w-4" />
-                <span className="hidden sm:inline">Edit</span>
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="sm" className="gap-2">
-                    <Trash2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">Delete</span>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your note and remove it from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+      <main className="flex-1 container max-w-6xl mx-auto px-4 py-6">
+        <div className="mb-4 flex items-center justify-between">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/")}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Back</span>
+          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="gap-2">
+              <Edit className="h-4 w-4" />
+              <span className="hidden sm:inline">Edit</span>
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" className="gap-2">
+                  <Trash2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Delete</span>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your note and remove it from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDelete}>
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 container max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Note Title - Mobile */}
             <div className="sm:hidden">
-              <h1 className="text-3xl font-bold leading-tight break-words">{note.title}</h1>
+              <h1 className="text-3xl font-bold leading-tight break-words">
+                {note.title}
+              </h1>
             </div>
 
             {/* Note Metadata */}
@@ -234,7 +247,10 @@ const NoteDetailsPage = () => {
               <CardContent>
                 <div
                   className="note-content max-w-none overflow-x-auto break-words"
-                  style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                  style={{
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                  }}
                   dangerouslySetInnerHTML={{ __html: note.content }}
                 />
               </CardContent>
@@ -244,7 +260,7 @@ const NoteDetailsPage = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Similar Notes */}
-            <div className="sticky top-20">
+            <div className="sticky top-18">
               <SimilarNotes noteId={note.id} />
             </div>
           </div>

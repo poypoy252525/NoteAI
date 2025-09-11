@@ -4,13 +4,9 @@ import "./index.css";
 import "./styles/editor.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
-import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <div>
-      <RouterProvider router={router} />
-      <Toaster />
-    </div>
+    <RouterProvider router={router} />
   </StrictMode>
 );

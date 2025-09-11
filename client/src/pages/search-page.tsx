@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { SearchInput } from "@/components/search/search-input";
 import { SearchFilters } from "@/components/search/search-filters";
 import { SearchResultsGrid } from "@/components/search/search-results-grid";
@@ -100,22 +100,18 @@ const SearchPage = () => {
 
   return (
     <div className="flex flex-col min-h-svh">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-                <ArrowLeft />
-              </Button>
-              <h1 className="text-2xl font-semibold">AI Search</h1>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 lg:px-8 py-6">
+        <div className="mb-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/")}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Back</span>
+          </Button>
+        </div>
         <div className="space-y-6">
           {/* Search Input */}
           <div className="relative">

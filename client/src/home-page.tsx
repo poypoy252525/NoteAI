@@ -2,7 +2,6 @@ import { Search, Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getHtmlPreview } from "@/utils/html-utils";
-import LogoutDialog from "./components/logout-dialog";
 import NoteCard from "./components/note-card";
 import { Button } from "./components/ui/button";
 import { api } from "./services/axios-instance";
@@ -47,11 +46,8 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-svh">
-      <header className="flex justify-between items-center p-4 lg:px-8 border-b sticky top-0 z-50 bg-background/85 backdrop-blur-xs">
-        <span className="text-2xl font-semibold">Notes</span>
-        <LogoutDialog />
-      </header>
-      <div className="px-4 lg:px-8 pb-4 flex flex-col flex-1 max-w-7xl mx-auto w-full">
+      <div className="px-4 lg:px-8 pb-4 pt-6 flex flex-col flex-1 max-w-7xl mx-auto w-full">
+        <h1 className="text-2xl font-semibold mb-2">Notes</h1>
         <div className="flex items-center gap-2 py-6">
           {/* <div className="relative flex-1 max-w-2xl">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -65,7 +61,7 @@ function HomePage() {
           <Button
             asChild
             variant="outline"
-            className="flex-1 justify-start lg:flex-none lg:min-w-[250px] lg:justify-center"
+            className="flex-1 justify-start lg:flex-none lg:min-w-[350px]"
           >
             <Link to="/search">
               <Search />

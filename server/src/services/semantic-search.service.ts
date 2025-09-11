@@ -21,10 +21,13 @@ export class SemanticSearchService {
     this.llmRepository = new GenAIRepository();
   }
 
-  async generateAndStoreEmbedding(noteId: string, content: string): Promise<void> {
+  async generateAndStoreEmbedding(
+    noteId: string,
+    content: string
+  ): Promise<void> {
     try {
       const embedding = await this.llmRepository.generateEmbedding(content);
-      
+
       if (!embedding) {
         throw new Error("Failed to generate embedding");
       }
@@ -51,7 +54,7 @@ export class SemanticSearchService {
   ): Promise<SemanticSearchResult[]> {
     try {
       const queryEmbedding = await this.llmRepository.generateEmbedding(query);
-      
+
       if (!queryEmbedding) {
         throw new Error("Failed to generate query embedding");
       }
@@ -59,16 +62,18 @@ export class SemanticSearchService {
       const embeddingString = `[${queryEmbedding.join(",")}]`;
 
       // Use cosine similarity for semantic search
-      const results = await this.prisma.$queryRaw<Array<{
-        id: string;
-        title: string;
-        content: string;
-        category: string | null;
-        summary: string | null;
-        similarity: number;
-        createdAt: Date;
-        updatedAt: Date;
-      }>>`
+      const results = await this.prisma.$queryRaw<
+        Array<{
+          id: string;
+          title: string;
+          content: string;
+          category: string | null;
+          summary: string | null;
+          similarity: number;
+          createdAt: Date;
+          updatedAt: Date;
+        }>
+      >`
         SELECT 
           id,
           title,
@@ -86,7 +91,7 @@ export class SemanticSearchService {
         LIMIT ${limit}
       `;
 
-      return results.map(result => ({
+      return results.map((result) => ({
         ...result,
         category: result.category || undefined,
         summary: result.summary || undefined,
@@ -104,18 +109,22 @@ export class SemanticSearchService {
   async batchGenerateEmbeddings(userId: string): Promise<void> {
     try {
       // Get all notes without embeddings for the user using raw SQL
-      const notesWithoutEmbeddings = await this.prisma.$queryRaw<Array<{
-        id: string;
-        title: string;
-        content: string;
-      }>>`
+      const notesWithoutEmbeddings = await this.prisma.$queryRaw<
+        Array<{
+          id: string;
+          title: string;
+          content: string;
+        }>
+      >`
         SELECT id, title, content 
         FROM "Note" 
         WHERE "userId" = ${userId}::uuid 
           AND embedding IS NULL
       `;
 
-      console.log(`Processing ${notesWithoutEmbeddings.length} notes for embeddings...`);
+      console.log(
+        `Processing ${notesWithoutEmbeddings.length} notes for embeddings...`
+      );
 
       for (const note of notesWithoutEmbeddings) {
         try {
@@ -124,7 +133,10 @@ export class SemanticSearchService {
           await this.generateAndStoreEmbedding(note.id, textToEmbed);
           console.log(`Generated embedding for note: ${note.id}`);
         } catch (error) {
-          console.error(`Failed to generate embedding for note ${note.id}:`, error);
+          console.error(
+            `Failed to generate embedding for note ${note.id}:`,
+            error
+          );
         }
       }
 
@@ -135,39 +147,47 @@ export class SemanticSearchService {
     }
   }
 
-  async findSimilarNotesToNote(noteId: string, limit: number = 5): Promise<SemanticSearchResult[]> {
+  async findSimilarNotesToNote(
+    noteId: string,
+    limit: number = 5
+  ): Promise<SemanticSearchResult[]> {
     try {
       // Get the note's embedding and user info using raw SQL
-      const noteInfo = await this.prisma.$queryRaw<Array<{
-        embedding: string;
-        userId: string;
-      }>>`
-        SELECT embedding, "userId"
+      const noteInfo = await this.prisma.$queryRaw<
+        Array<{
+          embedding: string;
+          userId: string;
+        }>
+      >`
+        SELECT embedding::text AS embedding, "userId"
         FROM "Note"
         WHERE id = ${noteId}::uuid
           AND embedding IS NOT NULL
       `;
 
+      // If the note doesn't exist or has no embedding yet, return empty results instead of throwing
       if (!noteInfo.length) {
-        throw new Error("Note not found or has no embedding");
+        return [];
       }
 
       const noteData = noteInfo[0];
       if (!noteData) {
-        throw new Error("Note data not found");
+        return [];
       }
       const { embedding, userId } = noteData;
 
-      const results = await this.prisma.$queryRaw<Array<{
-        id: string;
-        title: string;
-        content: string;
-        category: string | null;
-        summary: string | null;
-        similarity: number;
-        createdAt: Date;
-        updatedAt: Date;
-      }>>`
+      const results = await this.prisma.$queryRaw<
+        Array<{
+          id: string;
+          title: string;
+          content: string;
+          category: string | null;
+          summary: string | null;
+          similarity: number;
+          createdAt: Date;
+          updatedAt: Date;
+        }>
+      >`
         SELECT 
           id,
           title,
@@ -185,7 +205,7 @@ export class SemanticSearchService {
         LIMIT ${limit}
       `;
 
-      return results.map(result => ({
+      return results.map((result) => ({
         ...result,
         category: result.category || undefined,
         summary: result.summary || undefined,

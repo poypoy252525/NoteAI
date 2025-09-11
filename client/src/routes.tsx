@@ -7,39 +7,27 @@ import NoteDetailsPage from "./pages/note-details-page";
 import SignupPage from "./pages/signup-page";
 import CreateNotePage from "./pages/create-note-page";
 import SearchPage from "./pages/search-page";
+import RootLayout from "./root-layout";
 
 export const router = createBrowserRouter([
   {
-    element: <PrivateRoute />,
+    element: <RootLayout />,
     children: [
       {
-        path: "/",
-        element: <HomePage />,
+        element: <PrivateRoute />,
+        children: [
+          { path: "/", element: <HomePage /> },
+          { path: "/notes/:id", element: <NoteDetailsPage /> },
+          { path: "/notes/new", element: <CreateNotePage /> },
+          { path: "/search", element: <SearchPage /> },
+        ],
       },
       {
-        path: "/notes/:id",
-        element: <NoteDetailsPage />,
-      },
-      {
-        path: "/notes/new",
-        element: <CreateNotePage />,
-      },
-      {
-        path: "/search",
-        element: <SearchPage />,
-      },
-    ],
-  },
-  {
-    element: <GuestRoute />,
-    children: [
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/register",
-        element: <SignupPage />,
+        element: <GuestRoute />,
+        children: [
+          { path: "/login", element: <LoginPage /> },
+          { path: "/register", element: <SignupPage /> },
+        ],
       },
     ],
   },
