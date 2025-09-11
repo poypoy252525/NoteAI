@@ -1,6 +1,7 @@
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
 import { useEffect, useState } from "react";
+import SessionLoader from "./session-loader";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
@@ -29,7 +30,7 @@ const PrivateRoute = () => {
   }, [accessToken, setAuth]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <SessionLoader message="Checking session…" variant="spinner" />;
   }
 
   if (!accessToken && !loading) {
