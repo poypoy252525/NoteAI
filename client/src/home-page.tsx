@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getHtmlPreview } from "@/utils/html-utils";
@@ -21,17 +21,33 @@ interface Note {
 
 function HomePage() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const user = useAuth((state) => state.user);
 
   useEffect(() => {
-    api.get(`/users/${user?.userId}/notes`).then((response) => {
-      setNotes(response.data);
-    });
+    if (!user?.userId) {
+      setNotes([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    api
+      .get(`/users/${user?.userId}/notes`)
+      .then((response) => {
+        setNotes(response.data);
+      })
+      .catch(() => {
+        setNotes([]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [user?.userId]);
 
   return (
     <div className="flex flex-col min-h-svh">
-      <header className="flex justify-between items-center p-4 lg:px-8 border-b">
+      <header className="flex justify-between items-center p-4 lg:px-8 border-b sticky top-0 z-50 bg-background/85 backdrop-blur-xs">
         <span className="text-2xl font-semibold">Notes</span>
         <LogoutDialog />
       </header>
@@ -61,7 +77,14 @@ function HomePage() {
           </Button>
         </div>
 
-        {notes && notes.length ? (
+        {isLoading ? (
+          <div className="flex flex-1 items-center justify-center">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Loading notes...</span>
+            </div>
+          </div>
+        ) : notes && notes.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {notes.map((note, index) => (
               <Link
