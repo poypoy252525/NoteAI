@@ -20,7 +20,7 @@ const NoteCard = ({ title, category, summary, createdAt }: Props) => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="line-clamp-2">{title}</CardTitle>
+        <CardTitle className="line-clamp-2 leading-tight">{title}</CardTitle>
         <CardDescription className="truncate text-xs">
           {category ? category : "General"}
         </CardDescription>
