@@ -69,7 +69,9 @@ export function LoginForm({
                 <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
                   <GalleryVerticalEnd className="size-8 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold tracking-tight">Welcome to NoteAI</h1>
+                <h1 className="text-2xl font-bold tracking-tight">
+                  Welcome to NoteAI
+                </h1>
                 <p className="text-muted-foreground text-sm">
                   Sign in to your account to continue
                 </p>
@@ -110,7 +112,9 @@ export function LoginForm({
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">Password</FormLabel>
+                    <FormLabel className="text-sm font-medium">
+                      Password
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -145,7 +149,11 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full h-11 mt-2" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full h-11 mt-2"
+                disabled={loading}
+              >
                 {loading && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
                 Sign In
               </Button>
