@@ -1,4 +1,4 @@
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getHtmlPreview } from "@/utils/html-utils";
@@ -72,8 +72,9 @@ function HomePage() {
               AI Search
             </Link>
           </Button>
-          <Button asChild>
-            <Link to="/notes/new">New Note</Link>
+          <Button>
+            <Plus />
+            <Link to="/notes/new">Create Note</Link>
           </Button>
         </div>
 
