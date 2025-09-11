@@ -233,7 +233,7 @@ const NoteDetailsPage = () => {
               </CardHeader>
               <CardContent>
                 <div
-                  className="prose prose-sm sm:prose lg:prose-lg max-w-none dark:prose-invert overflow-x-auto break-words"
+                  className="note-content max-w-none overflow-x-auto break-words"
                   style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
                   dangerouslySetInnerHTML={{ __html: note.content }}
                 />
