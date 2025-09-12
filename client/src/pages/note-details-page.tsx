@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { NoteMetadataCard } from "@/components/metadata/note-metadata-card";
+import { SimilarNotes } from "@/components/similar-notes";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,20 +11,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  ArrowLeft,
-  Edit,
-  Trash2,
-  Calendar,
-  Tag,
-  Clock,
-  FileText,
-  Eye,
-} from "lucide-react";
-import { formatDistanceToNow, format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
-import { SimilarNotes } from "@/components/similar-notes";
+import { ArrowLeft, Edit, Eye, FileText, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 interface Note {
@@ -193,72 +183,18 @@ const NoteDetailsPage = () => {
             {/* Note Title & Hero Section */}
             <div className="space-y-6">
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight break-words bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight break-words bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
                   {note.title}
                 </h1>
 
                 {/* Enhanced Metadata Card */}
                 <Card className="bg-card border">
                   <CardContent className="p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {/* Creation Date */}
-                      <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50 border">
-                        <div className="p-2 rounded-full bg-primary/10">
-                          <Calendar className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                            Created
-                          </p>
-                          <p className="text-sm font-semibold">
-                            {format(new Date(note.createdAt), "MMM dd, yyyy")}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Last Updated */}
-                      {note.updatedAt !== note.createdAt && (
-                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50 border">
-                          <div className="p-2 rounded-full bg-orange-500/10">
-                            <Clock className="h-4 w-4 text-orange-500" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                              Updated
-                            </p>
-                            <p className="text-sm font-semibold">
-                              {formatDistanceToNow(new Date(note.updatedAt), {
-                                addSuffix: true,
-                              })}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Category */}
-                      <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50 border">
-                        <div className="p-2 rounded-full bg-emerald-500/10">
-                          <Tag className="h-4 w-4 text-emerald-500" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                            Category
-                          </p>
-                          {note.category ? (
-                            <Badge
-                              variant="secondary"
-                              className="text-sm font-semibold mt-1 bg-emerald-500/10 text-emerald-700 border-emerald-200"
-                            >
-                              {note.category}
-                            </Badge>
-                          ) : (
-                            <p className="text-sm text-muted-foreground italic">
-                              Uncategorized
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    <NoteMetadataCard
+                      createdAt={note.createdAt}
+                      updatedAt={note.updatedAt}
+                      category={note.category}
+                    />
                   </CardContent>
                 </Card>
               </div>
@@ -276,7 +212,7 @@ const NoteDetailsPage = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-muted/30 border rounded-lg p-4">
+                  <div className="bg-muted border rounded-lg p-4">
                     <p className="text-muted-foreground leading-relaxed break-words text-base">
                       {note.summary}
                     </p>
@@ -289,15 +225,15 @@ const NoteDetailsPage = () => {
             <Card className="bg-card border">
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-blue-500/10">
-                    <Eye className="h-5 w-5 text-blue-500" />
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Eye className="h-5 w-5 text-primary" />
                   </div>
                   Content
                 </CardTitle>
                 <Separator className="mt-3" />
               </CardHeader>
               <CardContent>
-                <div className="bg-muted/30 border rounded-lg p-6">
+                <div className="bg-muted border rounded-lg p-6">
                   <div
                     className="note-content overflow-x-auto break-words prose prose-sm max-w-none dark:prose-invert"
                     style={{
