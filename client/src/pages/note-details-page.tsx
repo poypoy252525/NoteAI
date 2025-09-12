@@ -1,22 +1,12 @@
 import { NoteMetadataCard } from "@/components/metadata/note-metadata-card";
 import { SimilarNotes } from "@/components/similar-notes";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { DeleteNoteDialog } from "@/components/delete-note-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/services/axios-instance";
 import { useAuth } from "@/stores/auth";
-import { ArrowLeft, Edit, Eye, FileText, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit, Eye, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -132,9 +122,9 @@ const NoteDetailsPage = () => {
 
   return (
     <div className="flex flex-col min-h-svh bg-background">
-      <main className="flex-1 container max-w-7xl mx-auto px-4 py-8">
+      <main className="flex-1 container max-w-7xl mx-auto px-2 sm:px-4 py-4">
         {/* Header Section */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
@@ -151,29 +141,7 @@ const NoteDetailsPage = () => {
                 <span className="hidden sm:inline">Edit Note</span>
               </Link>
             </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" className="gap-2">
-                  <Trash2 className="h-4 w-4" />
-                  <span className="hidden sm:inline">Delete</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your note and remove it from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete}>
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <DeleteNoteDialog onDelete={handleDelete} noteTitle={note.title} />
           </div>
         </div>
 
@@ -189,7 +157,7 @@ const NoteDetailsPage = () => {
 
                 {/* Enhanced Metadata Card */}
                 <Card className="bg-card border">
-                  <CardContent className="p-6">
+                  <CardContent className="p-3 sm:p-6">
                     <NoteMetadataCard
                       createdAt={note.createdAt}
                       updatedAt={note.updatedAt}
@@ -203,7 +171,7 @@ const NoteDetailsPage = () => {
             {/* Note Summary */}
             {note.summary && (
               <Card className="bg-card border">
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-3 px-3 sm:px-6">
                   <CardTitle className="text-xl flex items-center gap-3">
                     <div className="p-2 rounded-full bg-primary/10">
                       <FileText className="h-5 w-5 text-primary" />
@@ -211,8 +179,8 @@ const NoteDetailsPage = () => {
                     AI Summary
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="bg-muted border rounded-lg p-4">
+                <CardContent className="px-3 sm:px-6">
+                  <div className="bg-muted border rounded-lg p-3 sm:p-4">
                     <p className="text-muted-foreground leading-relaxed break-words text-base">
                       {note.summary}
                     </p>
@@ -223,7 +191,7 @@ const NoteDetailsPage = () => {
 
             {/* Note Content */}
             <Card className="bg-card border">
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-4 px-3 sm:px-6">
                 <CardTitle className="text-xl flex items-center gap-3">
                   <div className="p-2 rounded-full bg-primary/10">
                     <Eye className="h-5 w-5 text-primary" />
@@ -232,8 +200,8 @@ const NoteDetailsPage = () => {
                 </CardTitle>
                 <Separator className="mt-3" />
               </CardHeader>
-              <CardContent>
-                <div className="bg-muted border rounded-lg p-6">
+              <CardContent className="px-3 sm:px-6">
+                <div className="bg-muted border rounded-lg p-3 sm:p-6">
                   <div
                     className="note-content overflow-x-auto break-words prose prose-sm max-w-none dark:prose-invert"
                     style={{
