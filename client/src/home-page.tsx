@@ -1,7 +1,8 @@
-import { Search, Loader2, Plus } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHtmlPreview } from "@/utils/html-utils";
+import { Plus, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getHtmlPreview } from "@/utils/html-utils";
 import NoteCard from "./components/note-card";
 import { Button } from "./components/ui/button";
 import { api } from "./services/axios-instance";
@@ -75,11 +76,14 @@ function HomePage() {
         </div>
 
         {isLoading ? (
-          <div className="flex flex-1 items-center justify-center">
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Loading notes...</span>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="h-40 w-full rounded-lg" />
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ))}
           </div>
         ) : notes && notes.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
