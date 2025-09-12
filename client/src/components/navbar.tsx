@@ -2,6 +2,7 @@ import LogoutDialog from "@/components/logout-dialog";
 import { useAuth } from "@/stores/auth";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 // const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
 //   `px-3 py-2 rounded-md text-sm font-medium ${
@@ -35,7 +36,8 @@ const Navbar = () => {
           ) : null} */}
         </div>
 
-        <div className="ml-auto flex items-center gap-3 md:ml-4">
+        <div className="ml-auto flex items-center gap-2 md:ml-4">
+          <ModeToggle />
           <div className="flex items-center gap-2">
             <Avatar>
               {/* Replace with user profile image when available */}

@@ -5,6 +5,7 @@ const RootLayout = () => {
   return (
     <>
       <Toaster />
+      {/* <Navbar /> */}
       <Outlet />
     </>
   );
