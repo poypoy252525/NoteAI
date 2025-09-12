@@ -155,9 +155,11 @@ const NoteDetailsPage = () => {
             <span className="hidden sm:inline">Back to Notes</span>
           </Button>
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="gap-2">
-              <Edit className="h-4 w-4" />
-              <span className="hidden sm:inline">Edit Note</span>
+            <Button asChild variant="outline" size="sm" className="gap-2">
+              <Link to={`/notes/${note.id}/edit`}>
+                <Edit className="h-4 w-4" />
+                <span className="hidden sm:inline">Edit Note</span>
+              </Link>
             </Button>
             <AlertDialog>
               <AlertDialogTrigger asChild>

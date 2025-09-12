@@ -7,6 +7,7 @@ import NoteDetailsPage from "./pages/note-details-page";
 import SignupPage from "./pages/signup-page";
 import CreateNotePage from "./pages/create-note-page";
 import SearchPage from "./pages/search-page";
+import EditNotePage from "./pages/edit-note-page";
 import RootLayout from "./root-layout";
 
 export const router = createBrowserRouter([
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "/", element: <HomePage /> },
           { path: "/notes/:id", element: <NoteDetailsPage /> },
+          { path: "/notes/:id/edit", element: <EditNotePage /> },
           { path: "/notes/new", element: <CreateNotePage /> },
           { path: "/search", element: <SearchPage /> },
         ],
