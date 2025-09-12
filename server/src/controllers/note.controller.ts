@@ -13,6 +13,12 @@ const createNoteSchema = z.object({
   content: z.string(),
 });
 
+const updateNoteSchema = z.object({
+  title: z.string().trim().min(3, "Title must be at least 3 characters long"),
+  content: z.string().trim().min(3, "Content must be at least 3 characters long"),
+  category: z.string().optional(),
+});
+
 export const createNoteController = async (req: Request, res: Response) => {
   try {
     const validation = createNoteSchema.safeParse(req.body);
@@ -85,6 +91,54 @@ export const deleteNoteController = async (req: Request, res: Response) => {
 
     await noteService.deleteNote(id!);
     res.json({ message: "Note deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error", details: error });
+  }
+};
+
+export const updateNoteController = async (req: Request, res: Response) => {
+  try {
+    const { id, userId } = req.params;
+    
+    // Validate input data
+    const validation = updateNoteSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ error: validation.error.issues });
+    }
+
+    const { title, content, category } = validation.data;
+
+    // Check if the note exists and belongs to the user
+    const existingNote = await noteService.getNoteById(id!);
+    if (!existingNote) {
+      return res.status(404).json({ error: "Note not found" });
+    }
+
+    if (existingNote.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You can only update your own notes" });
+    }
+
+    // Update the note
+    const updatedNote = await noteService.updateNote(id!, {
+      title,
+      content,
+      category,
+    });
+
+    // Update embedding for semantic search in the background
+    const textToEmbed = `${title}\n\n${content}`;
+    semanticSearchService
+      .updateNoteEmbedding(id!, textToEmbed)
+      .catch((error) => {
+        console.error(
+          `Failed to update embedding for note ${id}:`,
+          error
+        );
+      });
+
+    res.json(updatedNote);
   } catch (error) {
     res.status(500).json({ error: "Internal server error", details: error });
   }

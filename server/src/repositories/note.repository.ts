@@ -8,6 +8,12 @@ type CreateNoteParams = {
   category?: string;
 };
 
+type UpdateNoteParams = {
+  title: string;
+  content: string;
+  category?: string;
+};
+
 class NoteRepository {
   private prisma = new PrismaClient();
 
@@ -58,6 +64,20 @@ class NoteRepository {
     const note = await this.prisma.note.delete({
       where: {
         id,
+      },
+    });
+
+    return note;
+  }
+
+  async updateNote(id: string, data: UpdateNoteParams) {
+    const note = await this.prisma.note.update({
+      where: { id },
+      data: {
+        title: data.title,
+        content: data.content,
+        category: data.category || null,
+        updatedAt: new Date(),
       },
     });
 
