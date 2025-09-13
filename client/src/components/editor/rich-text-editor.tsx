@@ -9,7 +9,7 @@ import EditorToolbar from "./editor-toolbar";
 
 const RichTextEditor = () => {
   const [, forceUpdate] = useState({});
-  
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({}),
@@ -24,7 +24,8 @@ const RichTextEditor = () => {
     ],
     editorProps: {
       attributes: {
-        class: "min-h-[200px] max-h-[400px] overflow-y-auto prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none p-4 border-t",
+        class:
+          "min-h-[200px] max-h-[400px] overflow-y-auto prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none p-4 border-t",
       },
     },
     content: "<p>Start writing your note...</p>",
@@ -42,10 +43,10 @@ const RichTextEditor = () => {
     if (editor) {
       // Additional event listeners to ensure toolbar updates
       const handleTransaction = () => forceUpdate({});
-      editor.on('transaction', handleTransaction);
-      
+      editor.on("transaction", handleTransaction);
+
       return () => {
-        editor.off('transaction', handleTransaction);
+        editor.off("transaction", handleTransaction);
       };
     }
   }, [editor]);
