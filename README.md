@@ -116,7 +116,3 @@ NoteAI is designed to be deployed on Vercel with minimal configuration. The appl
 - **Creative Writing**: Content creation with AI assistance
 
 NoteAI represents the next generation of note-taking applications, where artificial intelligence becomes a natural extension of human creativity and organization.
-
-```js
-const hello = "hello!";
-```
