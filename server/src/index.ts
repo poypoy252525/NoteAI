@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the NoteAI API!");
+  res.json("Welcome to the NoteAI API!");
 });
 
 app.use("/api", router);
