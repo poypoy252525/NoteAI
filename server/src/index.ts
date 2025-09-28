@@ -9,6 +9,11 @@ const app = express();
 app.use(cors({ origin: process.env.ALLOWED_ORIGIN!, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the NoteAI API!");
+});
+
 app.use("/api", router);
 
 const PORT = process.env.PORT || 3000;
